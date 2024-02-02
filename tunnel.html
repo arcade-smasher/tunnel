@@ -11,7 +11,9 @@
 			background-color: black;
 			overflow-x: hidden;
 			display: flex;
-			align-items: center;
+			-webkit-box-align: center;
+			    -ms-flex-align: center;
+			        align-items: center;
 			font-size: 12pt;
 		}
 		
@@ -116,57 +118,63 @@
 		#main3 h2 {
 			text-decoration: underline;
 		}
-		</style>
-		<style>
-			.info-line {
-				width: calc(100% - (8px*2));
-				position: relative;
-				transition: all 1s;
-				display: block;
-				text-align: center;
-				overflow: visible;
-			}
+		.info-line {
+			width: calc(100% - (8px*2));
+			position: relative;
+			-webkit-transition: all 1s;
+			-o-transition: all 1s;
+			transition: all 1s;
+			display: block;
+			text-align: center;
+			overflow: visible;
+		}
 			
-			.info-line i {
-				display: inline-block;
-				position: relative;
-				transition: all 1s ease 0s;
-			}
+		.info-line i {
+			display: inline-block;
+			position: relative;
+			-webkit-transition: all 1s ease 0s;
+			-o-transition: all 1s ease 0s;
+			transition: all 1s ease 0s;
+		}
 			
-			.info-line i:after {
-				font-family: "Verdana", "Arial", sans-serif;
-				pointer-events: none;
-				font-style: normal;
-				font-weight: normal;
-				content: attr(aria-valuetext);
-				position: absolute;
-				opacity: 0;
-				width: 340px;
-				clip-path: border-box xywh(0 0 0% 100%);
-				top: 0;
-				right: -15px;
-				left: 15px;
-				transition: all 0.8s ease-out 0s;
-			}
+		.info-line i:after {
+			font-family: "Verdana", "Arial", sans-serif;
+			pointer-events: none;
+			font-style: normal;
+			font-weight: normal;
+			content: attr(aria-valuetext);
+			position: absolute;
+			opacity: 0;
+			width: 340px;
+			clip-path: border-box xywh(0 0 0% 100%);
+			webkit-clip-path: border-box xywh(0 0 0% 100%);
+			top: 0;
+			right: -15px;
+			left: 15px;
+			-webkit-transition: all 0.8s ease-out 0s;
+			-o-transition: all 0.8s ease-out 0s;
+			transition: all 0.8s ease-out 0s;
+		}
 			
-			.info-line i:hover {
-				padding-right: 340px;
-			}
+		.info-line i:hover {
+			padding-right: 340px;
+		}
 			
-			.info-line i:hover:after {
-				opacity: 1;
-				right: 0;
-				padding-left: 0px;
-				clip-path: border-box xywh(0 0 100% 100%);
-			}
+		.info-line i:hover:after {
+			opacity: 1;
+			right: 0;
+			padding-left: 0px;
+			clip-path: border-box xywh(0 0 100% 100%);
+			webkit-clip-path: border-box xywh(0 0 100% 100%);
+		}
 
-			code {
-				font-size: 12pt;
-				padding: 0 2px;
-				display: inline;
-				background-color: black;
-			}
-			</style>
+		code {
+			font-size: 12pt;
+			padding: 0 2px;
+			display: inline;
+			background-color: black;
+		}
+		</style>
 	</head>
 	<body>
 		<div id="main1" class="document">
@@ -213,6 +221,12 @@
 				<span>v6.1.0</span><br><br>
 				
 				<input style="margin-right: 5px;" type="checkbox" checked="true" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}"><label>Show only full releases.</label>
+
+				<h2 class="private" style="margin-bottom: 5px;">v6.1.1</span></h2>
+				<ul class="private">
+					<li>Added CSS support for more browsers.</li>
+					<li>Changed CSS formatting.</li>
+				</ul>
 
 				<h2 class="public" style="margin-bottom: 5px;">v6.1<span class="private">.0</span></h2>
 				<ul class="public">
