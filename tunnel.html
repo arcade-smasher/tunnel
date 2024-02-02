@@ -1,0 +1,481 @@
+<html>
+	<head>
+		<title>Tunnel</title>
+		<script src="https://kit.fontawesome.com/e897e5d5dc.js" crossorigin="anonymous"></script>
+		<script></script>
+
+		<style>
+		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Lexend&family=Source+Code+Pro&display=swap');
+		body {
+			font-family: "Verdana", "Arial", sans-serif;
+			background-color: black;
+			overflow-x: hidden;
+			display: flex;
+			align-items: center;
+			font-size: 12pt;
+		}
+		
+		ul, ol {
+			text-align: left;
+			padding: 0;
+			margin: 0 auto;
+			padding-left: 30%;
+			padding-right: 20%;
+		}
+		
+		li {
+			margin-bottom: 10px;
+			line-height: 1.25em;
+			padding-left: 1em;
+			text-indent: -1em;
+		}
+
+		li::marker {
+			font-weight: bold;
+		}
+	
+		.document {
+			text-align: center;
+			/* margin-top: calc(50vh - 380.219px); */
+			/* margin-bottom: calc(50% - 380.219px + 50px); */
+			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+			color: white;
+			border: 4px solid white;
+			padding: 50px;
+			padding-top: 10px;
+			border-radius: 15px;
+			width: 600px;
+		}
+
+		input[type="text"] {
+			font-family: "Verdana";
+			background-color: transparent;
+			border: 3px solid white;
+			border-radius: 10px;
+			color: white;
+			padding: 15px 30px;
+			font-size: 20px;
+			height: 50px;
+			width: 350px;
+			
+		}
+
+		h1 {
+			font-family: "Lexend";
+			font-size: 40px;
+		}
+
+		button {
+			background-color: transparent;
+			border: 3px solid white;
+			color: white;
+			font-family: "Verdana";
+			padding: 7px 15px;
+			font-size: 15px;
+			border-radius: 10px;
+			cursor: pointer;
+			height: 50px;
+		}
+
+		#removeHistory {
+			border: 3px solid #FF4E4E;
+			color: #FF4E4E;
+			margin-top: 5px;
+		}
+		
+		.info {
+			color: white;
+		}
+
+		.warning {
+			color: orange;
+		}
+
+		.fatal-warning {
+			color: #ff1111;
+		}
+
+		button:disabled {
+			color: gray;
+			border: 3px solid gray;
+			cursor: not-allowed;
+		}
+
+		input[type="text"]:disabled {
+			border: 3px solid gray;
+			color: gray;
+		}
+
+		#main3 p {
+			text-align: left;
+			line-height: 1.5;
+		}
+
+		#main3 h2 {
+			text-decoration: underline;
+		}
+		</style>
+		<style>
+			.info-line {
+				width: calc(100% - (8px*2));
+				position: relative;
+				transition: all 1s;
+				display: block;
+				text-align: center;
+				overflow: visible;
+			}
+			
+			.info-line i {
+				display: inline-block;
+				position: relative;
+				transition: all 1s ease 0s;
+			}
+			
+			.info-line i:after {
+				font-family: "Verdana", "Arial", sans-serif;
+				pointer-events: none;
+				font-style: normal;
+				font-weight: normal;
+				content: attr(aria-valuetext);
+				position: absolute;
+				opacity: 0;
+				width: 340px;
+				clip-path: border-box xywh(0 0 0% 100%);
+				top: 0;
+				right: -15px;
+				left: 15px;
+				transition: all 0.8s ease-out 0s;
+			}
+			
+			.info-line i:hover {
+				padding-right: 340px;
+			}
+			
+			.info-line i:hover:after {
+				opacity: 1;
+				right: 0;
+				padding-left: 0px;
+				clip-path: border-box xywh(0 0 100% 100%);
+			}
+
+			code {
+				font-size: 12pt;
+				padding: 0 2px;
+				display: inline;
+				background-color: black;
+			}
+			</style>
+	</head>
+	<body>
+		<div id="main1" class="document">
+			<span style="position: absolute;right: 15px;top: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(2)">Changelog ></span>
+			<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
+			<h1>Tunnel</h1>
+			<p>A tool for avoiding internet censorship.</p>
+			<div id="abContainer">
+				<h2>about:blank launcher</h2>
+				<input type="text" id="urlInput" type="text" autocomplete="off" placeholder="Enter custom URL"/>
+				<button id="confirm"><i class="fas fa-check"></i> Confirm</button>
+				<button id="changeUrl" style="display: none;"><i class="fas fa-pen"></i> Change</button>
+				<button disabled id="launch"><i class="fas fa-rocket"></i> Launch</button><br><br>
+				<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a link without putting it in your search history."></i></div>
+			</div>
+			<!-- <br> -->
+			<div id="proxyContainer">
+				<h2>Web proxy launcher</h2>
+				<input type="text" id="proxyInput" type="number" autocomplete="off" min="0" max="100" placeholder="Enter proxy ID (0-${PROXYURLs.length})"/>
+				<button id="confirmProxyID"><i class="fas fa-check"></i> Confirm</button>
+				<button id="changeProxyID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
+				<button disabled id="launchProxyID"><i class="fas fa-rocket"></i> Launch</button><br><br>
+				<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a web proxy, which allows you to surf the web freely without restrictions."></i></div>
+			</div>
+			<br>
+			<div id="youtubeContainer">
+				<h2>Piped launcher</h2>
+				<input type="text" id="YTInput" type="number" autocomplete="off" min="0" max="100" placeholder="Enter Piped ID (0-${YTURLs.length})"/>
+				<button id="confirmYTID"><i class="fas fa-check"></i> Confirm</button>
+				<button id="changeYTID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
+				<button disabled id="launchYTID"><i class="fas fa-rocket"></i> Launch</button>
+				<br><br>
+				<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open piped, which is a privacy alternative to YouTube."></i></div>
+			</div>
+			
+		</div>
+		
+		<div id="main2" class="document" style="display:none;">
+			<style id="priv">.private{display: none;}</style>
+			<style id="pub">.public{}</style>
+			<style id="pubnotpriv">.publicnotprivate{}</style>
+				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<h1 style="margin-bottom: 0;">Tunnel</h1>
+				<span>v5.3.0</span><br><br>
+				
+				<input style="margin-right: 5px;" type="checkbox" checked="true" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}"><label>Show only full releases.</label>
+				
+				<h2 class="public" style="margin-bottom: 5px;">v6<span class="private">.0</span></h2>
+				<ul class="public">
+					<li>Added help page.</li>
+					<li>Added more information tips.</li>
+					<li>Improved information tip UX.</li>
+				</ul>
+	
+				<h2 class="private" style="margin-bottom: 5px;">v5.2.3</h2>
+				<ul class="private">
+					<li>Removed blocked and discontinued proxies.</li>
+				</ul>
+				
+				<h2 class="private" style="margin-bottom: 5px;">v5.2.2</h2>
+				<ul class="private">
+					<li>Rewrote changelog page button code.</li>
+				</ul>
+				
+				<h2 class="private" style="margin-bottom: 5px;">v5.2.1</h2>
+				<ul class="private">
+					<li>Cleaned up changelog page.</li>
+				</ul>
+	
+				<h2 class="private" style="margin-bottom: 5px;">v5.2.0</h2>
+				<ul class="private">
+					<li>Removed blocked Piped links.</li>
+				</ul>
+	
+				<h2 class="private" style="margin-bottom: 5px;">v5.1.0</h2>
+				<ul class="private">
+					<li>Cleaned up changelog page.</li>
+				</ul>
+				
+				<h2 class="public" style="margin-bottom: 5px;">v5<span class="private">.0.0</span></h2>
+				<ul class="public">
+					<li>Added changelog page.</li>
+					<li class=".publicnotprivate">Fixed a minor HTML formatting error.</li>
+				</ul>
+				
+				<h2 class="private" style="margin-bottom: 5px;">v4.2.0</h2>
+				<ul class="private">
+					<li>Added options to show releases in changelog page.</li>
+				</ul>
+				
+				<h2 class="private" style="margin-bottom: 5px;">v4.1.0</h2>
+				<ul class="private">
+					<li>Fixed a minor HTML formatting error.</li>
+				</ul>
+				
+				<h2 class="public" style="margin-bottom: 5px;">v4<span class="private">.0.0</span></h2>
+				<ul class="public">
+					<li>Added more proxies.</li>
+					<li class="publicnotprivate">Added Piped.</li>
+				</ul>
+				
+				<h2 class="private" style="margin-bottom: 5px;">v3.1.0</h2>
+				<ul class="private">
+					<li>Added Piped.</li>
+				</ul>
+				
+				
+				<h2 class="public" style="margin-bottom: 5px;">v3<span class="private">.0.0</span></h2>
+				<ul class="public">
+					<li>Made proxies openable by ID.</li>
+					<li>Removed proxy buttons.</li>
+					<li>Changed description.</li>
+				</ul>
+				
+				
+				<h2 class="public" style="margin-bottom: 5px;">v2<span class="private">.0.0</span></h2>
+				<ul class="public">
+					<li class="publicnotprivate">Added 2 different proxy buttons.</li>
+					<li class="private">Added another proxy button.</li>
+					<li>Changed description.</li>
+				</ul>
+				
+				<h2 class="private" style="margin-bottom: 5px;">v1.5.0</h2>
+				<ul class="private">
+					<li>Added a proxy button.</li>
+				</ul>
+				
+				<h2 class="public" style="margin-bottom: 5px;">v1<span class="private">.0.0</span></h2>
+				<ul class="public">
+					<li>Added an option to open custom about:blank tabs.</li>
+				</ul>
+			</div>
+
+			<div id="main3" class="document" style="display:none;">
+					<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+					<h1 style="margin-bottom: 0;">Tunnel</h1>
+					<span>User guide</span><br><br>
+						<h2>about:blank Launcher</h2>
+							<p>The about:blank launcher lets you open any link, without putting it in your search history. <br><br>
+							This will <b>not</b> unblock the link, it will simply just hide it from your search history.</p>
+							
+							<h3>Link format</h3>
+								<p>Every link must start with <code>https://</code>, otherwise it will not work. <br><br>
+								For example, if you have the link <code>coolmathgames.com</code>, type in <code><b>https://</b>coolmathgames.com</code></p>
+
+						<h2>IDs</h2>
+							<p>To open a proxy or Piped, simply input a number between <b>0</b> and the number listed in the number input. <br><br>
+							For example, the Piped input has the numbers <b>0 - 9</b>, so input a number between <b>0</b> and <b>9</b>.</p>
+							
+							<h3>Why so many numbers?</h3>
+								<p>Each number corresponds to a different link. If one of the links get blocked, there is many other links to choose from.</p>
+
+							<h3>What if a link doesn't work?</h3>
+								<p>If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
+				</div>
+
+		<script> // about:blank
+		var PROXYURLs = [
+			"https://sodium.onrender.com/",
+			"https://astroid.gg/",
+			"https://login.tomahawkchurch.org/",
+			"https://cdn.tomahawkchurch.org/",
+			"https://statistics.geyikler.com/",
+			"https://134.209.250.149/",
+			"https://usemetallic.com/",
+			"https://fun1.frostbite.cc/",
+			"https://serrcosswilsonmallcreepscensions0phunky.eithermouse.com/",
+			"https://whyamisoawesome.esentialecasa.ro/",
+			"https://nebus.mathewparkin.com/",
+			"https://myown123.streetdirectory.sg/",
+			"https://messi.mctwisted.pro/",
+			"https://1800history.gotroot.pw/",
+			"https://1700history.gotroot.pw/",
+			"https://1600history.gotroot.pw/",
+			"https://fisdinstructure.gotroot.pw/",
+			"https://jeo.todotrabajo.ar/",
+			"https://jeo5.todotrabajo.ar/",
+			"https://jeo4.todotrabajo.ar/",
+			"https://jeo3.todotrabajo.ar/",
+			"https://jeo2.todotrabajo.ar/",
+			"https://jeo4.subcetatecity.ro/",
+			"https://jeo3.subcetatecity.ro/",
+			"https://jeo2.subcetatecity.ro/",
+			"https://jeo.subcetatecity.ro/",
+			"https://jeo.robot-agachado.org/",
+			"https://jeo4.goldsoft.rs/",
+			"https://jeo3.goldsoft.rs/",
+			"https://jeo2.goldsoft.rs/",
+			"https://jeo.goldsoft.rs/"
+		];
+
+		var YTURLs = [
+			"https://pipedapi.syncpundit.io/",
+			"https://api-piped.mha.fi/",
+			"https://pipedapi.leptons.xyz/",
+			"https://pipedapi.r4fo.com/",
+			"https://pipedapi.smnz.de/",
+			"https://pipedapi.adminforge.de/",
+			"https://pipedapi.astartes.nl/",
+			"https://piapi.ggtyler.dev/",
+			"https://piped-backend.seitan-ayoub.lol/",
+			"https://pipedapi.12a.app/"
+		];
+
+		document.getElementById("proxyInput").placeholder = `Enter proxy ID (0-${PROXYURLs.length-1})`;
+		document.getElementById("proxyInput").max = PROXYURLs.length;
+		document.getElementById("YTInput").placeholder = `Enter Piped ID (0-${YTURLs.length-1})`;
+		document.getElementById("YTInput").max = YTURLs.length;
+
+		document.getElementById("confirm").addEventListener("click", function() {
+			const url = document.getElementById("urlInput").value;
+			if (url.startsWith("https://")) {
+				document.getElementById("urlInput").disabled = true;
+				document.getElementById("launch").removeAttribute("disabled");
+				document.getElementById("changeUrl").style.removeProperty("display");
+				document.getElementById("confirm").style.display = "none";
+			} else {
+				alert("Unable to confirm URL. Please make sure it starts with 'https://'.")
+			}
+		});
+	
+		document.getElementById("confirmProxyID").addEventListener("click", function() {
+			const ID = document.getElementById("proxyInput").value;
+			if (ID >= 0 && ID <= PROXYURLs.length-1) {
+				document.getElementById("proxyInput").disabled = true;
+				document.getElementById("launchProxyID").removeAttribute("disabled");
+				document.getElementById("changeProxyID").style.removeProperty("display");
+				document.getElementById("confirmProxyID").style.display = "none";
+			} else {
+				alert(`Unable to confirm ID. Please make sure it is between 0 and ${PROXYURLs.length-1}.`)
+			}
+		});
+
+		document.getElementById("confirmYTID").addEventListener("click", function() {
+			const ID = document.getElementById("YTInput").value;
+			if (ID >= 0 && ID <= YTURLs.length-1) {
+				document.getElementById("YTInput").disabled = true;
+				document.getElementById("launchYTID").removeAttribute("disabled");
+				document.getElementById("changeYTID").style.removeProperty("display");
+				document.getElementById("confirmYTID").style.display = "none";
+			} else {
+				alert(`Unable to confirm ID. Please make sure it is between 0 and ${YTURLs.length-1}.`)
+			}
+		});
+	
+		document.getElementById("launch").addEventListener("click", function() {
+			const url = document.getElementById("urlInput").value;
+			blank(url);
+		});
+	
+		document.getElementById("launchProxyID").addEventListener("click", function() {
+			const ID = document.getElementById('proxyInput').value;
+			launchProxyID(ID);
+		});
+
+		document.getElementById("launchYTID").addEventListener("click", function() {
+			const ID = document.getElementById('YTInput').value;
+			launchYTID(ID);
+		});
+			
+		document.getElementById("changeUrl").addEventListener("click", function () { 
+			document.getElementById("urlInput").removeAttribute("disabled");
+			document.getElementById("launch").disabled = true;
+			document.getElementById("changeUrl").style.display = "none";
+			document.getElementById("confirm").style.removeProperty("display");
+		});
+	
+		document.getElementById("changeProxyID").addEventListener("click", function () {
+			document.getElementById("proxyInput").removeAttribute("disabled");
+			document.getElementById("launchProxyID").disabled = true;
+			document.getElementById("changeProxyID").style.display = "none";
+			document.getElementById("confirmProxyID").style.removeProperty("display");
+		});
+
+		document.getElementById("changeYTID").addEventListener("click", function () {
+			document.getElementById("YTInput").removeAttribute("disabled");
+			document.getElementById("launchYTID").disabled = true;
+			document.getElementById("changeYTID").style.display = "none";
+			document.getElementById("confirmYTID").style.removeProperty("display");
+		});
+		
+		function launchProxyID(ID) {
+			blank(PROXYURLs[ID]);
+		}
+
+		function launchYTID(ID) {
+			blank(YTURLs[ID]);
+		}
+	
+		function blank(url) {
+			const tab = window.open('about:blank', '_blank');
+			const iframe = tab.document.createElement('iframe');
+			const stl = iframe.style;
+			stl.border = stl.outline = 'none';
+			stl.width = '100vw';
+			stl.height = '100vh';
+			stl.position = 'fixed';
+			stl.left = stl.right = stl.top = stl.bottom = '0';
+			iframe.src = url;
+			tab.document.body.appendChild(iframe);
+		}
+		</script>
+		<script>
+		function switchPage(page) {
+			for (i = 0; i < document.getElementsByClassName("document").length; i++) {
+				document.getElementsByClassName("document")[i].style.display = "none";
+			}
+			document.getElementById("main" + page.toString()).removeAttribute("style");
+		}
+		</script>
+	</body>
+</html>
