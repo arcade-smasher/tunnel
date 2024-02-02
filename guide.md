@@ -1,5 +1,5 @@
 
-[//]: <> (The guide is in the tunnel file itself, but I thought I might as well also post it here.)
+[//]: <> (The guide is copied from the tunnel file itself; I thought I might as well post it here.)
 # Tunnel
 
 User guide  
@@ -30,3 +30,7 @@ Each number corresponds to a different link. If one of the links get blocked, th
 ### What if a link doesn't work?
 
 If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.
+
+## Changelog page
+
+If you noticed the help button, you probably noticed the changelog button in the top right corner. It is just a changelog, listing what updates tunnel has gone through. There is a button to see advanced updates, which shows advanced updates that might not be full releases.
