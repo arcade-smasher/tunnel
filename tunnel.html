@@ -210,10 +210,16 @@
 			<style id="pubnotpriv">.publicnotprivate{}</style>
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
-				<span>v5.3.0</span><br><br>
+				<span>v6.1.0</span><br><br>
 				
 				<input style="margin-right: 5px;" type="checkbox" checked="true" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}"><label>Show only full releases.</label>
-				
+
+				<h2 class="public" style="margin-bottom: 5px;">v6.1<span class="private">.0</span></h2>
+				<ul class="public">
+					<li>Added information on changelog to help page</li>
+					<li>Fixed update name error.</li>
+				</ul>
+			
 				<h2 class="public" style="margin-bottom: 5px;">v6<span class="private">.0</span></h2>
 				<ul class="public">
 					<li>Added help page.</li>
@@ -321,6 +327,9 @@
 
 							<h3>What if a link doesn't work?</h3>
 								<p>If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
+
+						<h2>Changelog page</h2>
+								<p>If you noticed the help button, you probably noticed the changelog button in the top right corner. It is just a changelog, listing what updates tunnel has gone through. There is a button to see advanced updates, which shows advanced updates that might not be full releases.</p>
 				</div>
 
 		<script> // about:blank
