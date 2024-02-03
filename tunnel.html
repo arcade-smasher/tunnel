@@ -12,8 +12,8 @@
 			overflow-x: hidden;
 			display: flex;
 			-webkit-box-align: center;
-			    -ms-flex-align: center;
-			        align-items: center;
+			-ms-flex-align: center;
+			align-items: center;
 			font-size: 12pt;
 		}
 		
@@ -38,8 +38,6 @@
 	
 		.document {
 			text-align: center;
-			/* margin-top: calc(50vh - 380.219px); */
-			/* margin-bottom: calc(50% - 380.219px + 50px); */
 			position: relative;
 			margin-left: auto;
 			margin-right: auto;
@@ -147,7 +145,7 @@
 			opacity: 0;
 			width: 340px;
 			clip-path: border-box xywh(0 0 0% 100%);
-			webkit-clip-path: border-box xywh(0 0 0% 100%);
+			-webkit-clip-path: border-box xywh(0 0 0% 100%);
 			top: 0;
 			right: -15px;
 			left: 15px;
@@ -165,7 +163,7 @@
 			right: 0;
 			padding-left: 0px;
 			clip-path: border-box xywh(0 0 100% 100%);
-			webkit-clip-path: border-box xywh(0 0 100% 100%);
+			-webkit-clip-path: border-box xywh(0 0 100% 100%);
 		}
 
 		code {
@@ -493,8 +491,7 @@
 			iframe.src = url;
 			tab.document.body.appendChild(iframe);
 		}
-		</script>
-		<script>
+		
 		function switchPage(page) {
 			for (i = 0; i < document.getElementsByClassName("document").length; i++) {
 				document.getElementsByClassName("document")[i].style.display = "none";
