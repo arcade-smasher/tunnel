@@ -1,23 +1,162 @@
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>Tunnel</title>
-		<script src="https://kit.fontawesome.com/e897e5d5dc.js" crossorigin="anonymous"></script>
-		<script></script>
-
-		<style>
+<head>
+	<title>Tunnel</title>
+	<script src="https://kit.fontawesome.com/e897e5d5dc.js" crossorigin="anonymous"></script>
+	<style>
 		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Lexend&family=Source+Code+Pro&display=swap');
-		body {
-			font-family: "Verdana", "Arial", sans-serif;
+		html, body {
 			background-color: black;
-			overflow-x: hidden;
+			color: white;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			box-sizing: border-box;
+			
+			font-family: 'Consolas', monospace;
+		}
+
+		#commandLine {
+			tab-size: 4;
+			padding: 8px 8px 8px 18px;
+			white-space: normal;
+			margin: 0;
+			flex-grow: 1;
+			cursor: text;
+			font-size: 11pt;
+			color: #33a34f;
+		}
+
+		*::selection {
+			background-color: #1dc748;
+			color: black;
+		}
+
+		#commandLine * {
+			white-space: pre;
+			font-size: inherit;
+		}
+
+		#commandLine .line {
+			height: fit-content;
 			display: flex;
-			-webkit-box-align: center;
-			-ms-flex-align: center;
-			align-items: center;
-			font-size: 12pt;
+			width: 100%;
+			font-size: inherit;
+		}
+
+		#commandLine .input {
+			display: inline;
+			resize: none;
+			width: 100%;
+			background: transparent;
+			color: inherit;
+			border: none;
+			outline: none;
+			font-family: monospace;
+			padding: 0;
+			cursor: text;
+			font-size: inherit;
+		}
+
+
+
+
+		#grid {
+			font-family: monospace;
+			position: absolute;
+			user-select: none;
+			display: grid;
+			font-size: 9px;
+			border: none;
+			border-top: 1px solid #2e703f;
+			padding-top: 4px;
+			background-color: black;
+			color: transparent;
 		}
 		
-		ul, ol {
+		#grid:before {
+			content: "";
+			position: absolute;
+			top: 1px;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			border-top: 1px solid #2e703f;
+		}
+		
+		#grid:after {
+			content: "";
+			position: absolute;
+			top: 3px;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			border-top: 1px solid #2e703f;
+		}
+		
+		.row {
+			display: block;
+			height: 9px;
+			margin: 0;
+			border: none;
+			margin-top: 2px;
+			margin-bottom: 2px;
+		}
+		
+		.cell {
+			text-align: center;
+			padding: 0;
+			border: none;
+			border: 2px solid black;
+			display: inline-block;
+			box-sizing: content-box;
+			background-color: #0e1410;
+			width: 7px;
+			height: 9px;
+		}
+		
+		@keyframes fadeoutnormal {
+			0% {color: #2e703f;}
+			100% {color: transparent;}
+		}
+
+		@keyframes fadeouthover {
+			0% {
+				color: #22c94d;
+				text-shadow: #00ff00 0px 0 10px, #00ff00 0px 0 4px;
+			}
+			100% {
+				color: transparent;
+				text-shadow: none;
+			}
+		}
+
+		#splitContainer {
+			display: flex;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		
+		.left {
+			overflow: auto;
+			display: block;
+			min-width: 500px;
+			max-width: 500px;
+			height: 100%;
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			/* border-right: 5px solid #217737; */
+			box-shadow: -5px 0px 11px 9px rgba(33, 119, 55, 0.75), 2px 0px 11px 11px rgba(33, 119, 55, 0.25);
+		}
+
+
+
+		
+		.document ul, .document ol {
 			text-align: left;
 			padding: 0;
 			margin: 0 auto;
@@ -25,58 +164,104 @@
 			padding-right: 20%;
 		}
 		
-		li {
+		.document li {
 			margin-bottom: 10px;
 			line-height: 1.25em;
 			padding-left: 1em;
 			text-indent: -1em;
 		}
 
-		li::marker {
+		.document li::marker {
 			font-weight: bold;
 		}
 	
 		.document {
 			text-align: center;
 			position: relative;
-			margin-left: auto;
-			margin-right: auto;
-			color: white;
-			border: 4px solid white;
-			padding: 50px;
+			margin: 0;
+			overflow-x: hidden;
+			color: #33a34f;
+			box-sizing: border-box;
 			padding-top: 10px;
-			border-radius: 15px;
-			width: 600px;
+			max-width: 100%;
+			height: 100%;
 		}
 
-		input[type="text"] {
-			font-family: "Verdana";
+		.document::-webkit-scrollbar {
+			width: 15px;
 			background-color: transparent;
-			border: 3px solid white;
-			border-radius: 10px;
-			color: white;
-			padding: 15px 30px;
-			font-size: 20px;
-			height: 50px;
-			width: 350px;
+		}
+
+		.document::-webkit-scrollbar-thumb, .document::-webkit-scrollbar-button {
+			background-color: rgba(33, 119, 55, 0.7);
+			border-right: 3px solid black;
+			border-left: 3px solid black;
+			border-radius: 6px;
+		}
+
+		.document::-webkit-scrollbar-thumb:hover, .document::-webkit-scrollbar-button:hover {
+			background-color: rgba(23, 109, 45, 0.7);
+		}
+
+		.document::-webkit-scrollbar-thumb:active, .document::-webkit-scrollbar-button:active {
+			background-color: rgba(13, 99, 35, 0.7);
+		}
+
+		::-webkit-scrollbar-button {
+			border-style: solid;
+			height: 16px;
+			width: 16px;
+		}
+
+		.document input[type="text"], .document input[type="number"] {
+			background-color: transparent;
+			font-family: inherit;
+			border: 1px solid #33a34f;
+			border-radius: 5px;
+			color: #33a34f;
+			display: inline-block;
+			box-sizing: border-box;
+			padding: 4px 10px;
+			width: 230px;
+			font-size: 15px;
+			height: 30px;
 			
 		}
 
-		h1 {
-			font-family: "Lexend";
+		.document input[type=checkbox] {
+			accent-color: #217737;
+			/* filter: brightness(0) saturate(100%) invert(46%) sepia(23%) saturate(1141%) hue-rotate(83deg) brightness(108%) contrast(94%);
+			background-clip: padding-box;
+			width: 15px;
+			height: 15px;
+			background-color: black;
+			clip-path: polygon(0% 0%, 0% 100%, 13% 100%, 13% 13%, 87% 13%, 87% 87%, 13% 87%, 13% 100%, 100% 100%, 100% 0%); */
+		}
+
+		.document input[type=checkbox]:checked {
+			accent-color: #0b4419;
+			/* filter: brightness(0) saturate(100%) invert(46%) sepia(23%) saturate(1141%) hue-rotate(83deg) brightness(108%) contrast(94%);
+			clip-path: url(#checked); */
+		}
+
+		.document input[type="text"]::placeholder, .document input[type="number"]::placeholder {
+			color: #759b7f;
+		}
+
+		.document h1 {
 			font-size: 40px;
 		}
 
-		button {
+		.document button {
 			background-color: transparent;
-			border: 3px solid white;
-			color: white;
-			font-family: "Verdana";
-			padding: 7px 15px;
+			font-family: inherit;
+			border: 1px solid #33a34f;
+			color: #33a34f;
+			padding: 4px 10px;
 			font-size: 15px;
-			border-radius: 10px;
+			border-radius: 5px;
 			cursor: pointer;
-			height: 50px;
+			height: 30px;
 		}
 
 		#removeHistory {
@@ -86,7 +271,7 @@
 		}
 		
 		.info {
-			color: white;
+			color: #33a34f;
 		}
 
 		.warning {
@@ -97,15 +282,24 @@
 			color: #ff1111;
 		}
 
-		button:disabled {
+		.document button:disabled {
 			color: gray;
-			border: 3px solid gray;
+			border-color: gray;
 			cursor: not-allowed;
 		}
 
-		input[type="text"]:disabled {
-			border: 3px solid gray;
+		.document button:disabled::selection {
+			background-color: gray;
+			color: black;
+		}
+
+		.document input[type="text"]:disabled, .document input[type="number"]:disabled {
+			border-color: gray;
 			color: gray;
+		}
+
+		#main3 {
+			padding: 0 50px;
 		}
 
 		#main3 p {
@@ -125,6 +319,7 @@
 			display: block;
 			text-align: center;
 			overflow: visible;
+			position: relative;
 		}
 			
 		.info-line i {
@@ -133,16 +328,18 @@
 			-webkit-transition: all 1s ease 0s;
 			-o-transition: all 1s ease 0s;
 			transition: all 1s ease 0s;
+			overflow: visible;
 		}
 			
 		.info-line i:after {
-			font-family: "Verdana", "Arial", sans-serif;
+			font-family: 'Consolas', monospace;
 			pointer-events: none;
 			font-style: normal;
 			font-weight: normal;
 			content: attr(aria-valuetext);
 			position: absolute;
 			opacity: 0;
+			overflow: visible;
 			width: 340px;
 			clip-path: border-box xywh(0 0 0% 100%);
 			-webkit-clip-path: border-box xywh(0 0 0% 100%);
@@ -166,59 +363,80 @@
 			-webkit-clip-path: border-box xywh(0 0 100% 100%);
 		}
 
-		code {
+		.document code {
 			font-size: 12pt;
 			padding: 0 2px;
 			display: inline;
 			background-color: black;
 		}
-		</style>
-	</head>
-	<body>
-		<div id="main1" class="document">
-			<span style="position: absolute;right: 15px;top: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(2)">Changelog ></span>
-			<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
-			<h1>Tunnel</h1>
-			<p>A tool for avoiding internet censorship.</p>
-			<div id="abContainer">
-				<h2>about:blank launcher</h2>
-				<input type="text" id="urlInput" type="text" autocomplete="off" placeholder="Enter custom URL"/>
-				<button id="confirm"><i class="fas fa-check"></i> Confirm</button>
-				<button id="changeUrl" style="display: none;"><i class="fas fa-pen"></i> Change</button>
-				<button disabled id="launch"><i class="fas fa-rocket"></i> Launch</button><br><br>
-				<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a link without putting it in your search history."></i></div>
-			</div>
-			<!-- <br> -->
-			<div id="proxyContainer">
-				<h2>Web proxy launcher</h2>
-				<input type="text" id="proxyInput" type="number" autocomplete="off" min="0" max="100" placeholder="Enter proxy ID (0-${PROXYURLs.length})"/>
-				<button id="confirmProxyID"><i class="fas fa-check"></i> Confirm</button>
-				<button id="changeProxyID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
-				<button disabled id="launchProxyID"><i class="fas fa-rocket"></i> Launch</button><br><br>
-				<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a web proxy, which allows you to surf the web freely without restrictions."></i></div>
-			</div>
-			<br>
-			<div id="youtubeContainer">
-				<h2>Piped launcher</h2>
-				<input type="text" id="YTInput" type="number" autocomplete="off" min="0" max="100" placeholder="Enter Piped ID (0-${YTURLs.length})"/>
-				<button id="confirmYTID"><i class="fas fa-check"></i> Confirm</button>
-				<button id="changeYTID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
-				<button disabled id="launchYTID"><i class="fas fa-rocket"></i> Launch</button>
-				<br><br>
-				<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open piped, which is a privacy alternative to YouTube."></i></div>
-			</div>
-			
-		</div>
+	</style>
+</head>
+<body>
+	<div id="splitContainer">
+		<div class="left">
 		
-		<div id="main2" class="document" style="display:none;">
-			<style id="priv">.private{display: none;}</style>
-			<style id="pub">.public{}</style>
-			<style id="pubnotpriv">.publicnotprivate{}</style>
+			<div id="main1" class="document">
+				<span style="position: absolute;right: 15px;top: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(2)">Changelog ></span>
+				<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
+				<h1>Tunnel</h1>
+				<p>A tool for avoiding internet censorship.</p>
+				<div id="abContainer">
+					<h2>about:blank launcher</h2>
+					<input type="text" id="urlInput" type="text" autocomplete="off" placeholder="Enter custom URL"/>
+					<button id="confirm"><i class="fas fa-check"></i> Confirm</button>
+					<button id="changeUrl" style="display: none;"><i class="fas fa-pen"></i> Change</button>
+					<button disabled id="launch"><i class="fas fa-rocket"></i> Launch</button><br><br>
+					<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a link without putting it in your search history."></i></div>
+				</div>
+				<!-- <br> -->
+				<div id="proxyContainer">
+					<h2>Web proxy launcher</h2>
+					<input type="number" id="proxyInput" autocomplete="off" min="0" max="100" placeholder="Enter proxy ID (0-${PROXYURLs.length})"/>
+					<button id="confirmProxyID"><i class="fas fa-check"></i> Confirm</button>
+					<button id="changeProxyID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
+					<button disabled id="launchProxyID"><i class="fas fa-rocket"></i> Launch</button><br><br>
+					<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a web proxy, which allows you to surf the web freely without restrictions."></i></div>
+				</div>
+				<br>
+				<div id="youtubeContainer">
+					<h2>Piped launcher</h2>
+					<input type="number" id="YTInput" autocomplete="off" min="0" max="100" placeholder="Enter Piped ID (0-${YTURLs.length})"/>
+					<button id="confirmYTID"><i class="fas fa-check"></i> Confirm</button>
+					<button id="changeYTID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
+					<button disabled id="launchYTID"><i class="fas fa-rocket"></i> Launch</button>
+					<br><br>
+					<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open piped, which is a privacy alternative to YouTube."></i></div>
+				</div>
+			</div>
+
+			<div id="main2" class="document" style="display:none;">
+				<style id="priv">.private{display: none;}</style>
+				<style id="pub">.public{}</style>
+				<style id="pubnotpriv">.publicnotprivate{}</style>
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
-				<span>v6.1.1</span><br><br>
+				<span>v7.0.0</span><br><br>
+
+				<input style="margin-right: 5px;" type="checkbox" checked="true" id="togglePublic" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}">
+				</defs>
+					<svg style="position: absolute;width: 0;height: 0;background-color: black;" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 15 15">
+						<defs>
+						<clipPath id="checked">
+							<polygon points="0 0, 0 100, 13 100, 13 13, 87 13, 87 87, 13 87, 13 100, 100 100, 100 0"/>
+							<polygon points="31 31, 69 31, 69 69, 31 69"/>
+						</clipPath>
+						</defs>
+					</svg>
 				
-				<input style="margin-right: 5px;" type="checkbox" checked="true" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}"><label>Show only full releases.</label>
+				<label for="togglePublic">Show only full releases.</label>
+				
+				<h2 class="public" style="margin-bottom: 5px;">v7<span class="private">.0.0</span></span></h2>
+				<ul class="public">
+					<li>Redesigned UI.</li>
+					<li>Added more proxies.</li>
+					<li>Added a control panel.</li>
+					<li>Added a hacker grid.</li>
+				</ul>
 
 				<h2 class="private" style="margin-bottom: 5px;">v6.1.1</span></h2>
 				<ul class="private">
@@ -238,80 +456,80 @@
 					<li>Added more information tips.</li>
 					<li>Improved information tip UX.</li>
 				</ul>
-	
+
 				<h2 class="private" style="margin-bottom: 5px;">v5.2.3</h2>
 				<ul class="private">
 					<li>Removed blocked and discontinued proxies.</li>
 				</ul>
-				
+
 				<h2 class="private" style="margin-bottom: 5px;">v5.2.2</h2>
 				<ul class="private">
 					<li>Rewrote changelog page button code.</li>
 				</ul>
-				
+
 				<h2 class="private" style="margin-bottom: 5px;">v5.2.1</h2>
 				<ul class="private">
 					<li>Cleaned up changelog page.</li>
 				</ul>
-	
+
 				<h2 class="private" style="margin-bottom: 5px;">v5.2.0</h2>
 				<ul class="private">
 					<li>Removed blocked Piped links.</li>
 				</ul>
-	
+
 				<h2 class="private" style="margin-bottom: 5px;">v5.1.0</h2>
 				<ul class="private">
 					<li>Cleaned up changelog page.</li>
 				</ul>
-				
+
 				<h2 class="public" style="margin-bottom: 5px;">v5<span class="private">.0.0</span></h2>
 				<ul class="public">
 					<li>Added changelog page.</li>
 					<li class=".publicnotprivate">Fixed a minor HTML formatting error.</li>
 				</ul>
-				
+
 				<h2 class="private" style="margin-bottom: 5px;">v4.2.0</h2>
 				<ul class="private">
 					<li>Added options to show releases in changelog page.</li>
 				</ul>
-				
+
 				<h2 class="private" style="margin-bottom: 5px;">v4.1.0</h2>
 				<ul class="private">
 					<li>Fixed a minor HTML formatting error.</li>
 				</ul>
-				
+
 				<h2 class="public" style="margin-bottom: 5px;">v4<span class="private">.0.0</span></h2>
 				<ul class="public">
 					<li>Added more proxies.</li>
 					<li class="publicnotprivate">Added Piped.</li>
 				</ul>
-				
+
 				<h2 class="private" style="margin-bottom: 5px;">v3.1.0</h2>
 				<ul class="private">
 					<li>Added Piped.</li>
 				</ul>
-				
-				
+
+
 				<h2 class="public" style="margin-bottom: 5px;">v3<span class="private">.0.0</span></h2>
 				<ul class="public">
 					<li>Made proxies openable by ID.</li>
 					<li>Removed proxy buttons.</li>
 					<li>Changed description.</li>
 				</ul>
-				
-				
+
+
 				<h2 class="public" style="margin-bottom: 5px;">v2<span class="private">.0.0</span></h2>
 				<ul class="public">
 					<li class="publicnotprivate">Added 2 different proxy buttons.</li>
 					<li class="private">Added another proxy button.</li>
 					<li>Changed description.</li>
 				</ul>
-				
+
 				<h2 class="private" style="margin-bottom: 5px;">v1.5.0</h2>
 				<ul class="private">
 					<li>Added a proxy button.</li>
 				</ul>
-				
+
 				<h2 class="public" style="margin-bottom: 5px;">v1<span class="private">.0.0</span></h2>
 				<ul class="public">
 					<li>Added an option to open custom about:blank tabs.</li>
@@ -319,35 +537,239 @@
 			</div>
 
 			<div id="main3" class="document" style="display:none;">
-					<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
-					<h1 style="margin-bottom: 0;">Tunnel</h1>
-					<span>User guide</span><br><br>
-						<h2>about:blank Launcher</h2>
-							<p>The about:blank launcher lets you open any link, without putting it in your search history. <br><br>
-							This will <b>not</b> unblock the link, it will simply just hide it from your search history.</p>
-							
-							<h3>Link format</h3>
-								<p>Every link must start with <code>https://</code>, otherwise it will not work. <br><br>
-								For example, if you have the link <code>coolmathgames.com</code>, type in <code><b>https://</b>coolmathgames.com</code></p>
+				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<h1 style="margin-bottom: 0;">Tunnel</h1>
+				<span>User guide</span><br><br>
+					<h2>about:blank Launcher</h2>
+						<p>The about:blank launcher lets you open any link, without putting it in your search history. <br><br>
+						This will <b>not</b> unblock the link, it will simply just hide it from your search history.</p>
+						
+						<h3>Link format</h3>
+							<p>Every link must start with <code>https://</code>, otherwise it will not work. <br><br>
+							For example, if you have the link <code>coolmathgames.com</code>, type in <code><b>https://</b>coolmathgames.com</code></p>
 
-						<h2>IDs</h2>
-							<p>To open a proxy or Piped, simply input a number between <b>0</b> and the number listed in the number input. <br><br>
-							For example, the Piped input has the numbers <b>0 - 9</b>, so input a number between <b>0</b> and <b>9</b>.</p>
-							
-							<h3>Why so many numbers?</h3>
-								<p>Each number corresponds to a different link. If one of the links get blocked, there are many other links to choose from.</p>
+					<h2>IDs</h2>
+						<p>To open a proxy or Piped, simply input a number between <b>0</b> and the number listed in the number input. <br><br>
+						For example, the Piped input has the numbers <b>0 - 9</b>, so input a number between <b>0</b> and <b>9</b>.</p>
+						
+						<h3>Why so many numbers?</h3>
+							<p>Each number corresponds to a different link. If one of the links get blocked, there are many other links to choose from.</p>
 
-							<h3>What if a link doesn't work?</h3>
-								<p>If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
+						<h3>What if a link doesn't work?</h3>
+							<p>If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
 
-						<h2>Changelog page</h2>
-							<p>If you noticed the help button, you probably noticed the changelog button in the top right corner. <br>
-							It is just a changelog, listing what updates tunnel has gone through. <br>
-							There is a button to see advanced updates, which shows advanced updates that might not be full releases.</p>
-				</div>
+					<h2>Changelog page</h2>
+						<p>If you noticed the help button, you probably noticed the changelog button in the top right corner. <br>
+						It is just a changelog, listing what updates tunnel has gone through. <br>
+						There is a button to see advanced updates, which shows advanced updates that might not be full releases.</p>
+						
+					<h2>Command Line</h2>
+						<p>The command line is an alternative way to open proxies or cloak tabs. <br>
+						Type help in the command line to see info on commands.</p>
+			</div>
+		</div>
+		<div id="commandLine"></div>
+	</div>
+	<div id="grid">
+		<!-- JavaScript will populate this grid -->
+	</div>
 
-		<script> // about:blank
+	<script>
+		const commandLine = document.getElementById("commandLine");
+		const caret = document.getElementById("textcaret");
+		const version = "7.0.0";
+
+		var commands = [
+			[
+				"changes",
+				function () {
+					switchPage(2);
+					print();
+					input(">");
+				}
+			],
+			[
+				"cloak",
+				function () {
+					customInput("Enter URL: ").addEventListener("keypress", function () {
+						if (event.keyCode == 13) {
+							blank(this.value);
+							print();
+							input(">");
+						}
+					});
+				}
+			],
+			[
+				"guide",
+				function () {
+					switchPage(3);
+					print();
+					input(">");
+				}
+			],
+			[
+				"help",
+				function () {
+					print("For more information on a specific command, type HELP [command].")
+					print("CHANGES\t\tOpens the changelog page.");
+					print("CLOAK\t\tOpens a cloaked tab.");
+					print("GUIDE\t\tOpens the guide.");
+					print("HELP\t\tProvides information for commands.");
+					print("PIPED\t\tOpens the specified Piped ID.");
+					print("PROXY\t\tOpens the specified proxy ID.");
+					print("VER\t\t\tProvides the current version of Tunnel.");
+					print();
+					input(">");
+				}
+			],
+			[
+				"piped",
+				function () {
+					customInput("Enter Piped ID: ").addEventListener("keypress", function () {
+						if (event.keyCode == 13) {
+							if (isNaN(Number(this.value)) != true) {
+								if (Number(this.value) >= 0 && Number(this.value) <= YTURLs.length-1) {
+									launchYTID(Number(this.value));
+								} else {
+									print(`The ID must be between 0 and ${YTURLs.length-1}.`);
+								}
+							} else {
+								print("The ID must be a number.");
+							}
+							print();
+							input(">");
+						}
+					});
+				}
+			],
+			[
+				"proxy",
+				function () {
+					customInput("Enter proxy ID: ").addEventListener("keypress", function () {
+						if (event.keyCode == 13) {
+							if (isNaN(Number(this.value)) != true) {
+								if (Number(this.value) >= 0 && Number(this.value) <= PROXYURLs.length-1) {
+									launchProxyID(Number(this.value));
+								} else {
+									print(`The ID must be between 0 and ${PROXYURLs.length-1}.`);
+								}
+							} else {
+								print("The ID must be a number.");
+							}
+							print();
+							input(">");
+						}
+					});
+				}
+			],
+			[
+				"ver",
+				function () {
+					print();
+					print(`Tunnel [Version ${version}]`);
+					print("A tool for avoiding internet censorship.");
+					print();
+					input(">");
+				}
+			],
+		];
+			
+		function print(text="") {
+			text = text.toString();
+			const line = document.createElement("span");
+			line.className = "line";
+			line.innerHTML = text.replaceAll("\n", "<br>") + "<br>";
+			commandLine.appendChild(line);
+		}
+
+		function input(text="") {
+			text = text.toString();
+			const line = document.createElement("span");
+			line.className = "line";
+			line.innerHTML = text.replaceAll("\n", "<br>");
+			const inputter = document.createElement("input");
+			inputter.type = "text";
+			inputter.className = "input";
+			inputter.setAttribute("autocorrect", "off");
+			inputter.setAttribute("autocomplete", "off");
+			inputter.setAttribute("spellcheck", "false");
+			inputter.addEventListener("keypress", function () {
+				if (event.keyCode == 13) {
+					var command = (this.value).trimStart().split(" ");
+					if (command[0].trim() != "") {
+						var commandInfo = function () {
+							var includes = false;
+							var toRun = null;
+							for(var i = 0; i < commands.length; i++) {
+								if (commands[i][0].includes(command[0].toLowerCase())) {
+									includes = true;
+									toRun = commands[i][1];
+								}
+							}
+							return [includes, toRun];
+						}();
+						if (commandInfo[0] == true) {
+							commandInfo[1]();
+						} else {
+							print(`'${command[0]}' is not recognized as a valid command.`);
+							print();
+							input(">");
+						}
+						line.textContent += this.value;
+						line.innerHTML += "<br>";
+						this.remove();
+					} else {
+						line.textContent += this.value;
+						line.innerHTML += "<br>";
+						this.remove();
+						input(">");
+					}
+				}
+			});
+			line.appendChild(inputter);
+			commandLine.appendChild(line);
+			inputter.focus();
+			return inputter;
+		}
+
+		function customInput(text="") {
+			text = text.toString();
+			const line = document.createElement("span");
+			line.className = "line";
+			line.innerHTML = text.replaceAll("\n", "<br>");
+			const inputter = document.createElement("input");
+			inputter.type = "text";
+			inputter.className = "input";
+			inputter.setAttribute("autocorrect", "off");
+			inputter.setAttribute("autocomplete", "off");
+			inputter.setAttribute("spellcheck", "false");
+			inputter.addEventListener("keypress", function () {
+				if (event.keyCode == 13) {
+					setTimeout(function(){
+						line.textContent += inputter.value;
+						line.innerHTML += "<br>";
+						inputter.remove();
+					}, 0);
+				}
+			});
+			line.appendChild(inputter);
+			commandLine.appendChild(line);
+			inputter.focus();
+			return inputter;
+		}
+
+		print(`Tunnel [Version ${version}]`);
+		print("(c) arcade-smasher. All rights reserved.\n");
+
+		input(">")
+	</script>
+	<script>
 		var PROXYURLs = [
+			"https://mystic.xyz.moochurch.com/",
+			"https://meteor.newsofmaricopa.com/",
+			"https://cultures.linexedu.eu/",
+			"https://gravity.omniscien.cl/",
 			"https://sodium.onrender.com/",
 			"https://astroid.gg/",
 			"https://login.tomahawkchurch.org/",
@@ -378,7 +800,11 @@
 			"https://jeo4.goldsoft.rs/",
 			"https://jeo3.goldsoft.rs/",
 			"https://jeo2.goldsoft.rs/",
-			"https://jeo.goldsoft.rs/"
+			"https://jeo.goldsoft.rs/",
+			"https://ixl.plus/",
+			"https://chat.mathhelpnow.site/",
+			"https://todo.mathnotes.help/",
+			"https://holyubofficial.net/"
 		];
 
 		var YTURLs = [
@@ -498,6 +924,122 @@
 			}
 			document.getElementById("main" + page.toString()).removeAttribute("style");
 		}
-		</script>
-	</body>
+	</script>
+	<script>
+		const rows = 24;
+		const cols = 16;
+		var chars = "aȧȧbcdððeƎƎʓʓ∑∑€€££fƒƒghijklƛƛmnoØØȢȢȯȯpþþq¶¶rs§§tuüüvwxyÿÿ¥¥zƺƺ▯▯▯▯▯{}{}$$$$&&~%[][][]…………";
+		const grid = document.getElementById('grid');
+
+		function drawGrid() {
+			for (let i = 0; i < rows; i++) {
+				const row = document.createElement('div');
+				row.className = "row";
+				for (let j = 0; j < cols; j++) {
+					const cell = document.createElement('div');
+					cell.id = `cell_${i}_${j}`;
+					cell.className = "cell";
+					cell.innerHTML = '▯';
+					row.appendChild(cell);
+				}
+				grid.appendChild(row);
+				grid.style.width = grid.getBoundingClientRect().width + "px";
+			}
+			return grid;
+		}
+		
+		function randomCoordinate() {
+			return [Math.floor(Math.random() * rows), Math.floor(Math.random() * cols)];
+		}
+
+		function randomCharacter() {
+			return chars[Math.floor(Math.random() * chars.length)];
+		}
+		
+		var target;
+		
+		document.addEventListener('mouseover', function(e){
+			target = e.target;
+		});
+		
+		function paintCell(x, y, character, actAsHovered=false) {
+			const cell = document.getElementById(`cell_${x}_${y}`);
+			if (cell) {
+				cell.innerHTML = character;
+				if (target == cell || actAsHovered == true) {
+					cell.style = "animation: fadeouthover 2s;";	
+				} else {
+					cell.style = "animation: fadeoutnormal 2s;";
+				}
+				setTimeout(function(){cell.style = "";}, 2000);
+			}
+			return {"cell": cell,
+					"hover": (target == cell)};
+		}
+
+		window.onload = function() {
+			drawGrid();
+			setInterval(function(){
+				var i = 0;
+				var coord = randomCoordinate();
+				var hoverLine = false;
+				var intervalID = setInterval(function(){
+					if (coord[1] + i > rows) {
+						clearInterval(intervalID);
+					} else {
+						cell = paintCell(coord[0]+i, coord[1], randomCharacter(), hoverLine);
+						if (cell.hover == true) {
+							hoverLine = true;
+						}
+					}
+					i++;
+				}, 50);
+				setTimeout(function(){
+					clearInterval(intervalID);
+				}, 699)
+			}, 70);
+			
+			let offsetX, offsetY;
+			let isDragging = false;
+			var minX = 0;
+			var maxX = window.innerWidth - grid.offsetWidth;
+			var minY = 0;
+			var maxY = window.innerHeight - grid.offsetHeight - 4;
+			grid.style.width = grid.getBoundingClientRect().width;
+			grid.style.height = grid.getBoundingClientRect().height;
+			grid.style.left = maxX + 'px';
+			grid.style.top = minY + 'px';
+
+			window.addEventListener('resize', function () {
+				maxX = window.innerWidth - grid.offsetWidth;
+				maxY = window.innerHeight - grid.offsetHeight - 4;
+				grid.style.left = (Math.min(Math.max(grid.offsetLeft, minX), maxX) / window.innerWidth * 100) + '%';
+				grid.style.top = (Math.min(Math.max(grid.offsetTop, minY), maxY) / window.innerHeight * 100) + '%';
+			})
+
+			grid.addEventListener('mousedown', function () {
+				isDragging = true;
+				offsetX = event.clientX - grid.getBoundingClientRect().left;
+				offsetY = event.clientY - grid.getBoundingClientRect().top;
+			});
+
+			document.addEventListener('mouseup', () => {
+				isDragging = false;
+			});
+
+			document.addEventListener('mousemove', function () {
+				if (isDragging) {
+					let x = event.clientX - offsetX;
+					let y = event.clientY - offsetY;
+
+					x = Math.min(Math.max(x, minX), maxX);
+					y = Math.min(Math.max(y, minY), maxY);
+
+					grid.style.left = (x / window.innerWidth * 100) + '%';
+					grid.style.top = (y / window.innerHeight * 100) + '%';
+				}
+			});
+		};
+	</script>
+</body>
 </html>
