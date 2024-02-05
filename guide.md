@@ -15,7 +15,7 @@ This will  **not**  unblock the link, it will simply just hide it from your sear
 
 Every link must start with  `https://`, otherwise it will not work.  
   
-For example, if you have the link  `coolmathgames.com`, type in  `**https://**coolmathgames.com`
+For example, if you have the link  `coolmathgames.com`, type in  `https://coolmathgames.com`
 
 ## IDs
 
@@ -34,3 +34,9 @@ If a link doesn't work, the likeliest reason is that it just got blocked. It wil
 ## Changelog page
 
 If you noticed the help button, you probably noticed the changelog button in the top right corner. It is just a changelog, listing what updates tunnel has gone through. There is a button to see advanced updates, which shows advanced updates that might not be full releases.
+
+## Command Line
+
+The command line is an alternative way to open proxies or cloak tabs.
+
+Type help in the command line to see info on commands.
