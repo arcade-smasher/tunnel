@@ -593,9 +593,15 @@
 				function () {
 					customInput("Enter URL: ").addEventListener("keypress", function () {
 						if (event.keyCode == 13) {
-							blank(this.value);
-							print();
-							input(">");
+							if (this.value.startsWith("https://")) {
+								blank(this.value);
+								print();
+								input(">");
+							} else {
+								print("The link must start with 'https://'.");
+								print();
+								input(">");
+							}
 						}
 					});
 				}
