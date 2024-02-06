@@ -63,15 +63,34 @@
 
 		#grid {
 			font-family: monospace;
-			position: absolute;
+			position: fixed;
 			user-select: none;
 			display: grid;
 			font-size: 9px;
 			border: none;
-			border-top: 1px solid #2e703f;
+			border-top: 3px double #2e703f;
 			padding-top: 4px;
 			background-color: black;
 			color: transparent;
+		}
+
+		#grid .grid-close {
+			position: absolute;
+			background-color: black;
+			outline: #2e703f solid 1px;
+			color: #2e703f;
+			width: 9px;
+			height: 9px;
+			z-index: 2;
+			font-size: 10pt;
+			cursor: pointer;
+			font-weight: bold;
+			top: -2px;
+			right: 1px;
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: center;
+			align-items: center;
 		}
 		
 		#grid:before {
@@ -81,17 +100,17 @@
 			bottom: 0;
 			left: 0;
 			right: 0;
-			border-top: 1px solid #2e703f;
+			border-top: 3px double #2e703f;
 		}
 		
 		#grid:after {
 			content: "";
 			position: absolute;
-			top: 3px;
+			top: 5px;
 			bottom: 0;
 			left: 0;
 			right: 0;
-			border-top: 1px solid #2e703f;
+			border-top: 3px double #2e703f;
 		}
 		
 		.row {
@@ -141,15 +160,15 @@
 		}
 
 		.survey {
-			position: absolute;
+			position: fixed;
 			text-align: center;
 			padding: 0;
 			bottom: 0;
 			right: 0;
 			width: 240px;
-			height: 50px;
+			height: fit-content;
 			border: 1px solid #2e703f;
-			background-color: transparent;
+			background-color: black;
 			cursor: default;
 			font-size: 11pt;
 		}
@@ -175,10 +194,12 @@
 		}
 
 		.topbar {
-			position: absolute;
+			position: fixed;
+			z-index: 3;
 			height: 20px;
 			width: 100%;
 			box-sizing: border-box;
+			top: 0;
 			padding: 0 150px;
 			background-color: black;
 			border-bottom: 1px solid #2e703f;
@@ -676,7 +697,7 @@
 		<div class="survey-close" onclick="this.parentElement.remove();">&times;</div>
 		<span onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSf3csAgAXMkRhL921APD9WBLENoxHGCWN0C_JKRExRVb0hXRw/viewform')">Appreciate Tunnel? <br>Please spend a minute of your time on the <u>Tunnel survey</u>.</span>
 	</div>
-	<div id="grid">
+	<div id="grid"><div class="grid-close" onclick="clearInterval(gridInterval);gridInterval=null;this.parentElement.remove();">&times;</div>
 		<!-- JavaScript will populate this grid -->
 	</div>
 
@@ -1187,10 +1208,10 @@ monitorBattery();
 			return {"cell": cell,
 					"hover": (target == cell)};
 		}
-
+		let gridInterval;
 		window.onload = function() {
 			drawGrid();
-			setInterval(function(){
+			gridInterval = setInterval(function(){
 				var i = 0;
 				var coord = randomCoordinate();
 				var hoverLine = false;
@@ -1214,7 +1235,7 @@ monitorBattery();
 			let isDragging = false;
 			var minX = 0;
 			var maxX = window.innerWidth - grid.offsetWidth;
-			var minY = 0;
+			var minY = 21;
 			var maxY = window.innerHeight - grid.offsetHeight - 4;
 			grid.style.width = grid.getBoundingClientRect().width;
 			grid.style.height = grid.getBoundingClientRect().height;
