@@ -7,7 +7,7 @@
 		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Lexend&family=Source+Code+Pro&display=swap');
 		html, body {
 			background-color: black;
-			color: white;
+			color: #33a34f;
 			width: 100%;
 			height: 100%;
 			margin: 0;
@@ -136,9 +136,61 @@
 			width: 100%;
 			height: 100%;
 			margin: 0;
-			padding: 0;
+			box-sizing: border-box;
+			padding-top: 15px;
 		}
 
+		.survey {
+			position: absolute;
+			text-align: center;
+			padding: 0;
+			bottom: 0;
+			right: 0;
+			width: 240px;
+			height: 50px;
+			border: 1px solid #2e703f;
+			background-color: transparent;
+			cursor: default;
+			font-size: 11pt;
+		}
+
+		.survey u {
+			cursor: pointer;
+		}
+
+		.survey .survey-close {
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 2px;
+			width: 12px;
+			height: 12px;
+			font-size: 14pt;
+			outline: #2e703f solid 1px;
+			cursor: pointer;
+		}
+
+		.topbar {
+			position: absolute;
+			height: 20px;
+			width: 100%;
+			box-sizing: border-box;
+			padding: 0 150px;
+			background-color: black;
+			border-bottom: 1px solid #2e703f;
+		}
+
+		.topbar #battery {
+			float: right;
+		}
+
+		.topbar #battery-charging {
+			font-size: 10pt;
+		}
 		
 		.left {
 			overflow: auto;
@@ -147,8 +199,7 @@
 			max-width: 500px;
 			height: 100%;
 			box-sizing: border-box;
-			margin: 0;
-			padding: 0;
+			padding-top: 0;
 			/* border-right: 5px solid #217737; */
 			box-shadow: -5px 0px 11px 9px rgba(33, 119, 55, 0.75), 2px 0px 11px 11px rgba(33, 119, 55, 0.25);
 		}
@@ -179,6 +230,7 @@
 			text-align: center;
 			position: relative;
 			margin: 0;
+			padding-bottom: 25px;
 			overflow-x: hidden;
 			color: #33a34f;
 			box-sizing: border-box;
@@ -192,25 +244,19 @@
 			background-color: transparent;
 		}
 
-		.document::-webkit-scrollbar-thumb, .document::-webkit-scrollbar-button {
+		.document::-webkit-scrollbar-thumb {
 			background-color: rgba(33, 119, 55, 0.7);
 			border-right: 3px solid black;
 			border-left: 3px solid black;
 			border-radius: 6px;
 		}
 
-		.document::-webkit-scrollbar-thumb:hover, .document::-webkit-scrollbar-button:hover {
+		.document::-webkit-scrollbar-thumb:hover {
 			background-color: rgba(23, 109, 45, 0.7);
 		}
 
-		.document::-webkit-scrollbar-thumb:active, .document::-webkit-scrollbar-button:active {
+		.document::-webkit-scrollbar-thumb:active {
 			background-color: rgba(13, 99, 35, 0.7);
-		}
-
-		::-webkit-scrollbar-button {
-			border-style: solid;
-			height: 16px;
-			width: 16px;
 		}
 
 		.document input[type="text"], .document input[type="number"] {
@@ -264,6 +310,11 @@
 			height: 30px;
 		}
 
+		.document u {
+			font-weight: bold;
+			cursor: pointer;
+		}
+
 		#removeHistory {
 			border: 3px solid #FF4E4E;
 			color: #FF4E4E;
@@ -298,8 +349,9 @@
 			color: gray;
 		}
 
-		#main3 {
-			padding: 0 50px;
+		#main3, #main4 {
+			padding-left: 50px;
+			padding-right: 50px;
 		}
 
 		#main3 p {
@@ -372,12 +424,14 @@
 	</style>
 </head>
 <body>
+	<div class="topbar"><span id="time">00:00 AM</span><span id="battery"><i class="fa-solid fa-bolt" id="battery-charging" style="display: none"></i> <span id="battery-percentage">100</span>% <i class="fa-solid fa-battery-full" id="battery-icon"></i></span></div>
 	<div id="splitContainer">
 		<div class="left">
 		
 			<div id="main1" class="document">
 				<span style="position: absolute;right: 15px;top: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(2)">Changelog ></span>
 				<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
+				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1>Tunnel</h1>
 				<p>A tool for avoiding internet censorship.</p>
 				<div id="abContainer">
@@ -414,28 +468,28 @@
 				<style id="pub">.public{}</style>
 				<style id="pubnotpriv">.publicnotprivate{}</style>
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
 				<span>v7.0.0</span><br><br>
 
 				<input style="margin-right: 5px;" type="checkbox" checked="true" id="togglePublic" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}">
-				</defs>
-					<svg style="position: absolute;width: 0;height: 0;background-color: black;" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 15 15">
-						<defs>
-						<clipPath id="checked">
-							<polygon points="0 0, 0 100, 13 100, 13 13, 87 13, 87 87, 13 87, 13 100, 100 100, 100 0"/>
-							<polygon points="31 31, 69 31, 69 69, 31 69"/>
-						</clipPath>
-						</defs>
-					</svg>
 				
 				<label for="togglePublic">Show only full releases.</label>
 				
+				<h2 class="private" style="margin-bottom: 5px;">v7.0.1</span></h2>
+				<ul class="private">
+					<li>Made the help command work fully.</li>
+					<li>Added command aliases.</li>
+				</ul>
+
 				<h2 class="public" style="margin-bottom: 5px;">v7<span class="private">.0.0</span></span></h2>
 				<ul class="public">
 					<li>Redesigned UI.</li>
 					<li>Added more proxies.</li>
 					<li>Added a control panel.</li>
 					<li>Added a hacker grid.</li>
+					<li class="publicnotprivate">Made the help command work fully.</li>
+					<li class="publicnotprivate">Added command aliases.</li>
 				</ul>
 
 				<h2 class="private" style="margin-bottom: 5px;">v6.1.1</span></h2>
@@ -538,6 +592,7 @@
 
 			<div id="main3" class="document" style="display:none;">
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
 				<span>User guide</span><br><br>
 					<h2>about:blank Launcher</h2>
@@ -546,7 +601,7 @@
 						
 						<h3>Link format</h3>
 							<p>Every link must start with <code>https://</code>, otherwise it will not work. <br><br>
-							For example, if you have the link <code>coolmathgames.com</code>, type in <code><b>https://</b>coolmathgames.com</code></p>
+							For example, if you have the link <code>coolmathgames.com</code>, type in <code><b>https://</b>coolmathgames.com</code></p><br><br>
 
 					<h2>IDs</h2>
 						<p>To open a proxy or Piped, simply input a number between <b>0</b> and the number listed in the number input. <br><br>
@@ -558,22 +613,133 @@
 						<h3>What if a link doesn't work?</h3>
 							<p>If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
 
+						<h3>How do I know what proxy each ID corresponds to?</h3>
+							<p><u onclick="switchPage(4)">Click here</u> for a list of IDs and what proxy they take you to.</p><br><br>
+
 					<h2>Changelog page</h2>
-						<p>If you noticed the help button, you probably noticed the changelog button in the top right corner. <br>
-						It is just a changelog, listing what updates tunnel has gone through. <br>
-						There is a button to see advanced updates, which shows advanced updates that might not be full releases.</p>
+						<p>If you noticed the help button, you probably noticed the changelog button in the top right corner. <br><br>
+						It is just a changelog, listing what updates Tunnel has gone through. <br><br>
+						There is a button to see advanced updates, which shows advanced updates that might not be full releases.</p><br><br>
 						
 					<h2>Command Line</h2>
-						<p>The command line is an alternative way to open proxies or cloak tabs. <br>
+						<p>The command line is an alternative way to open proxies or cloak tabs. <br><br>
 						Type help in the command line to see info on commands.</p>
 			</div>
+			<div id="main4" class="document" style="display:none;">
+				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<span style="position: fixed !important;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
+				<h1 style="margin-bottom: 0;">Tunnel</h1>
+				<span>ID list</span><br><br>
+					<h2>0 - 3</h2>
+						Name: Interstellar<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
+						Speed: <i class="fa-solid fa-gauge"></i> Normal<br><br>
+
+					<h2>4</h2>
+						Name: Sodium<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
+						Speed: <i class="fa-solid fa-gauge"></i> Normal<br><br>
+
+					<h2>5 - 8</h2>
+						Name: Astroid<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
+						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> Slow<br><br>
+
+					<h2>9</h2>
+						Name: Croxy Proxy<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> N/A<br>
+						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> Meh<br><br>
+
+					<h2>10</h2>
+						Name: Metallic<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> Broken<br>
+						Speed: <i class="fa-solid fa-gauge-high"></i> Fast<br><br>
+
+					<h2>11 - 34</h2>
+						Name: Rammerhead<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> N/A<br>
+						Speed: <i class="fa-solid fa-gauge"></i> Variable<br><br>
+
+					<h2>35 - 37</h2>
+						Name: Artclass<br>
+						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
+						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> N/A
+			</div>
 		</div>
-		<div id="commandLine"></div>
+		<div id="commandLine" onclick="if(event.target.className!='line'&&document.getElementById('commandLineInput')){this.getElementsByTagName('input')[this.getElementsByTagName('input').length-1].focus();}"></div>
+	</div>
+	<div class="survey">
+		<div class="survey-close" onclick="this.parentElement.remove();">&times;</div>
+		<span onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSf3csAgAXMkRhL921APD9WBLENoxHGCWN0C_JKRExRVb0hXRw/viewform')">Appreciate Tunnel? <br>Please spend a minute of your time on the <u>Tunnel survey</u>.</span>
 	</div>
 	<div id="grid">
 		<!-- JavaScript will populate this grid -->
 	</div>
 
+	<script>
+		const batteryPercentageElem = document.getElementById("battery-percentage");
+		const batteryChargingElem = document.getElementById("battery-charging");
+		const batteryIconElem = document.getElementById("battery-icon");
+		const timeDisplayElem = document.getElementById("time");
+
+		function getCurrentTime() {
+			var currentTime = new Date();
+			var hours = currentTime.getHours();
+			var minutes = currentTime.getMinutes();
+			var ampm = hours >= 12 ? 'PM' : 'AM';
+			hours = hours % 12;
+			hours = hours ? hours : 12;
+			minutes = minutes < 10 ? '0' + minutes : minutes;
+			var timeString = hours + ':' + minutes + ' ' + ampm;
+			return timeString;
+		}
+		timeDisplayElem.innerHTML = getCurrentTime();
+
+		var timeClock = setInterval(function () {
+			timeDisplayElem.innerHTML = getCurrentTime();
+		}, 60000);
+
+		function monitorBattery() {
+			function updateBatteryStatus(battery) {
+				const batteryPercent = battery.level * 100;
+				const batteryCharging = battery.charging;
+
+				if (batteryPercent <= 10) {
+					batteryIconElem.className = 'fa-solid fa-battery-empty';
+				} else if (batteryPercent <= 25) {
+					batteryIconElem.className = 'fa-solid fa-battery-quarter';
+				} else if (batteryPercent <= 50) {
+					batteryIconElem.className = 'fa-solid fa-battery-half';
+				} else if (batteryPercent <= 75) {
+					batteryIconElem.className = 'fa-solid fa-battery-three-quarters';
+				} else if (batteryPercent <= 100) {
+					batteryIconElem.className = 'fa-solid fa-battery-full';
+				}
+
+				batteryPercentageElem.innerHTML = batteryPercent;
+				batteryChargingElem.style.display = batteryCharging ? "inline" : "none";
+			}
+
+			if ('getBattery' in navigator || 'battery' in navigator) {
+				navigator.getBattery().then(function (battery) {
+					battery.addEventListener('chargingchange', function () {
+						updateBatteryStatus(battery);
+					});
+					battery.addEventListener('levelchange', function () {
+						updateBatteryStatus(battery);
+					});
+					updateBatteryStatus(battery);
+				});
+			} else {
+				console.log("Battery Status API not supported");
+			}
+		}
+
+monitorBattery();
+
+
+		monitorBattery();
+	</script>
 	<script>
 		const commandLine = document.getElementById("commandLine");
 		const caret = document.getElementById("textcaret");
@@ -581,7 +747,7 @@
 
 		var commands = [
 			[
-				"changes",
+				["changes", "changelog", "log"],
 				function () {
 					switchPage(2);
 					print();
@@ -589,7 +755,7 @@
 				}
 			],
 			[
-				"cloak",
+				["cloak", "open", "url", "ab"],
 				function () {
 					customInput("Enter URL: ").addEventListener("keypress", function () {
 						if (event.keyCode == 13) {
@@ -607,7 +773,7 @@
 				}
 			],
 			[
-				"guide",
+				["guide"],
 				function () {
 					switchPage(3);
 					print();
@@ -615,22 +781,45 @@
 				}
 			],
 			[
-				"help",
+				["help", "info"],
 				function () {
-					print("For more information on a specific command, type HELP [command].")
-					print("CHANGES\t\tOpens the changelog page.");
-					print("CLOAK\t\tOpens a cloaked tab.");
-					print("GUIDE\t\tOpens the guide.");
-					print("HELP\t\tProvides information for commands.");
-					print("PIPED\t\tOpens the specified Piped ID.");
-					print("PROXY\t\tOpens the specified proxy ID.");
-					print("VER\t\t\tProvides the current version of Tunnel.");
-					print();
-					input(">");
+					if (arguments[0].length == 1) {
+						console.log(arguments);
+						print("For more information on a specific command, type HELP [command].")
+						print("CHANGES\t\t\tOpens the changelog page.");
+						print("CLOAK\t\t\tOpens a cloaked tab.");
+						print("GUIDE\t\t\tOpens the guide.");
+						print("HELP\t\t\tProvides information for commands.");
+						print("PIPED\t\t\tOpens the specified Piped ID.");
+						print("PROXYINFO\t\tLists all the proxies and their respective information.");
+						print("PROXY\t\t\tOpens the specified proxy ID.");
+						print("VER\t\t\t\tProvides the current version of Tunnel.");
+						print();
+						input(">");
+					} else {
+						var commandDescriptions = [
+							["changes", "Typing this command will open the changelog in the left-hand side. \nParameter(s): None. \nAlias(es): CHANGES, CHANGELOG, LOG."],
+							["cloak", "Typing this command will provide an input to open a website without logging it in your search history. \nParameter(s): URL. \nAlias(es): CLOAK, OPEN, URL, AB."],
+							["guide", "Typing this command will open the user guide in the left-hand side. \nParameter(s): None. \nAlias(es): None."],
+							["help", "Typing this command alone will provide a list of commands, or provide help on a specific command. \nParameter(s): Command. \nAlias(es): HELP, INFO."],
+							["piped", "Typing this command will provide an input to open Piped, a YouTube alternative. \nParameter(s): Number. \nAlias(es): PIPED, YOUTUBE."],
+							["proxyinfo", "Typing this command will provide a list of proxies and provide stats about them. \nParameter(s): None. \nAlias(es): PROXYINFO, PROXIES, PROXYHELP, PROXYLIST."],
+							["proxy", "Typing this command will provide an input to open a proxy. \nParameter(s): Number. \nAlias(es): None."],
+							["ver", "Typing this command will provide the current version of Tunnel in the command line. \nParameter(s): None. \nAlias(es): VER, VERSION."]
+						];
+						for (i = 0; i < commands.length; i++) {
+							if (commands[i][0].includes(arguments[0][1])) {
+								commandDescription = commandDescriptions[i][1];
+							}
+						}
+						print(commandDescription);
+						print();
+						input(">");
+					}
 				}
 			],
 			[
-				"piped",
+				["piped", "youtube", "yt"],
 				function () {
 					customInput("Enter Piped ID: ").addEventListener("keypress", function () {
 						if (event.keyCode == 13) {
@@ -650,7 +839,15 @@
 				}
 			],
 			[
-				"proxy",
+				["proxyinfo", "proxies", "proxyhelp", "proxylist"],
+				function () {
+					switchPage(4);
+					print();
+					input(">");
+				}
+			],
+			[
+				["proxy"],
 				function () {
 					customInput("Enter proxy ID: ").addEventListener("keypress", function () {
 						if (event.keyCode == 13) {
@@ -670,7 +867,7 @@
 				}
 			],
 			[
-				"ver",
+				["ver", "version"],
 				function () {
 					print();
 					print(`Tunnel [Version ${version}]`);
@@ -684,6 +881,9 @@
 		function print(text="") {
 			text = text.toString();
 			const line = document.createElement("span");
+			// if (document.getElementById("commandLineInput")) {
+			// 	document.getElementById("commandLineInput").parentElement.innerHTML = document.getElementById("commandLineInput").parentElement.textContent + document.getElementById("commandLineInput").value + "<br>";
+			// }
 			line.className = "line";
 			line.innerHTML = text.replaceAll("\n", "<br>") + "<br>";
 			commandLine.appendChild(line);
@@ -696,6 +896,7 @@
 			line.innerHTML = text.replaceAll("\n", "<br>");
 			const inputter = document.createElement("input");
 			inputter.type = "text";
+			inputter.id = "commandLineInput";
 			inputter.className = "input";
 			inputter.setAttribute("autocorrect", "off");
 			inputter.setAttribute("autocomplete", "off");
@@ -707,7 +908,7 @@
 						var commandInfo = function () {
 							var includes = false;
 							var toRun = null;
-							for(var i = 0; i < commands.length; i++) {
+							for (var i = 0; i < commands.length; i++) {
 								if (commands[i][0].includes(command[0].toLowerCase())) {
 									includes = true;
 									toRun = commands[i][1];
@@ -716,7 +917,7 @@
 							return [includes, toRun];
 						}();
 						if (commandInfo[0] == true) {
-							commandInfo[1]();
+							commandInfo[1](command);
 						} else {
 							print(`'${command[0]}' is not recognized as a valid command.`);
 							print();
@@ -746,6 +947,7 @@
 			line.innerHTML = text.replaceAll("\n", "<br>");
 			const inputter = document.createElement("input");
 			inputter.type = "text";
+			inputter.id = "commandLineInput";
 			inputter.className = "input";
 			inputter.setAttribute("autocorrect", "off");
 			inputter.setAttribute("autocomplete", "off");
@@ -809,8 +1011,7 @@
 			"https://jeo.goldsoft.rs/",
 			"https://ixl.plus/",
 			"https://chat.mathhelpnow.site/",
-			"https://todo.mathnotes.help/",
-			"https://holyubofficial.net/"
+			"https://todo.mathnotes.help/"
 		];
 
 		var YTURLs = [
