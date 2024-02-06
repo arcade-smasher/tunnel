@@ -705,7 +705,7 @@
 
 		function monitorBattery() {
 			function updateBatteryStatus(battery) {
-				const batteryPercent = Math.floor(battery.level) * 100;
+				const batteryPercent = battery.level * 100;
 				const batteryCharging = battery.charging;
 
 				if (batteryPercent <= 10) {
@@ -720,7 +720,7 @@
 					batteryIconElem.className = 'fa-solid fa-battery-full';
 				}
 
-				batteryPercentageElem.innerHTML = batteryPercent.toString();
+				batteryPercentageElem.innerHTML = batteryPercent;
 				batteryChargingElem.style.display = batteryCharging ? "inline" : "none";
 			}
 
