@@ -720,7 +720,7 @@
 					batteryIconElem.className = 'fa-solid fa-battery-full';
 				}
 
-				batteryPercentageElem.innerHTML = batteryPercent;
+				batteryPercentageElem.innerHTML = Math.round(batteryPercent);
 				batteryChargingElem.style.display = batteryCharging ? "inline" : "none";
 			}
 
