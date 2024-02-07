@@ -5,20 +5,25 @@
 	<script src="https://kit.fontawesome.com/e897e5d5dc.js" crossorigin="anonymous"></script>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Lexend&family=Source+Code+Pro&display=swap');
+		html {
+			height: 100%;
+		}
 		html, body {
 			background-color: black;
 			color: #33a34f;
 			width: 100%;
-			min-height: 100%;
 			margin: 0;
 			box-sizing: border-box;
-			
 			font-family: 'Consolas', monospace;
+		}
+		body {
+			min-height: 100%;
+			display: flex;
 		}
 
 		#commandLine {
 			tab-size: 4;
-			padding: 8px 8px 8px 18px;
+			padding: 8px 8px 64px 18px;
 			white-space: normal;
 			margin: 0;
 			flex-grow: 1;
@@ -153,7 +158,7 @@
 		#splitContainer {
 			display: flex;
 			width: 100%;
-			height: 100%;
+			min-height: 100%;
 			margin: 0;
 			box-sizing: border-box;
 			padding-top: 15px;
@@ -215,7 +220,7 @@
 		
 		.left {
 			overflow: auto;
-			display: block;
+			display: absolute;
 			min-width: 500px;
 			max-width: 500px;
 			min-height: 100%;
@@ -260,23 +265,23 @@
 			height: 100%;
 		}
 
-		.document::-webkit-scrollbar {
+		::-webkit-scrollbar {
 			width: 15px;
 			background-color: transparent;
 		}
 
-		.document::-webkit-scrollbar-thumb {
+		::-webkit-scrollbar-thumb {
 			background-color: rgba(33, 119, 55, 0.7);
 			border-right: 3px solid black;
 			border-left: 3px solid black;
 			border-radius: 6px;
 		}
 
-		.document::-webkit-scrollbar-thumb:hover {
+		::-webkit-scrollbar-thumb:hover {
 			background-color: rgba(23, 109, 45, 0.7);
 		}
 
-		.document::-webkit-scrollbar-thumb:active {
+		::-webkit-scrollbar-thumb:active {
 			background-color: rgba(13, 99, 35, 0.7);
 		}
 
