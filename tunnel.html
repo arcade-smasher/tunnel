@@ -447,6 +447,77 @@
 			display: inline;
 			background-color: black;
 		}
+
+
+
+
+		.snake-row {
+			display: flex;
+		}
+
+		.snake-cell {
+			box-sizing: border-box;
+		}
+
+		.snake-cell::after {
+			content: '\00a0\00a0';
+			display: block;
+			text-align: center;
+		}
+
+		.snake-head.sleft::after {
+			content: '<\00a0' !important;
+		}
+		.snake-head.right::after {
+			content: '>\00a0' !important;
+		}
+		.snake-head.down::after {
+			content: 'v\00a0' !important;
+		}
+		.snake-head.up::after {
+			content: 'ʌ\00a0' !important;
+		}
+		.snake-head.undefined::after {
+			content: '*\00a0' !important;
+		}
+		.snake-head::after {
+			content: '*\00a0' !important;
+		}
+
+		.snake-segment.sleft::after {
+			content: '―\00a0';
+		}
+		.snake-segment.right::after {
+			content: '―\00a0';
+		}
+		.snake-segment.down::after {
+			content: '|\00a0';
+		}
+		.snake-segment.up::after {
+			content: '|\00a0';
+		}
+		.snake-segment.upleft::after {
+			content: '╲\00a0';
+		}
+		.snake-segment.downright::after {
+			content: '╲\00a0';
+		}
+		.snake-segment.downleft::after {
+			content: '╱\00a0';
+		}
+		.snake-segment.upright::after {
+			content: '╱\00a0';
+		}
+		.snake-segment.undefined::after {
+			content: '*\00a0';
+		}
+		.snake-segment::after {
+			content: '*\00a0';
+		}
+
+		.food::after {
+			content: '@\00a0';
+		}
 	</style>
 </head>
 <body>
@@ -496,12 +567,19 @@
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
 				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
-				<span>v7.0.0</span><br><br>
+				<span>v7.0.2</span><br><br>
 
 				<input style="margin-right: 5px;" type="checkbox" checked="true" id="togglePublic" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}">
 				
 				<label for="togglePublic">Show only full releases.</label>
 				
+				<h2 class="public" style="margin-bottom: 5px;">v7.0.2</span></h2>
+				<ul class="public">
+					<li>Added games to command line.</li>
+					<li>Added snake to games in command line.</li>
+					<li>Fixed multiple sizing bugs.</li>
+				</ul>
+
 				<h2 class="private" style="margin-bottom: 5px;">v7.0.1</span></h2>
 				<ul class="private">
 					<li>Added proxy info.</li>
@@ -696,7 +774,9 @@
 						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> N/A
 			</div>
 		</div>
-		<div id="commandLine" onclick="if(event.target.className!='line'&&document.getElementById('commandLineInput')){this.getElementsByTagName('input')[this.getElementsByTagName('input').length-1].focus();}"></div>
+		<div id="commandLine" onclick="if(event.target.className!='line'&&document.getElementById('commandLineInput')){this.getElementsByTagName('input')[this.getElementsByTagName('input').length-1].focus();}">
+			<div id="snake-container" style="display: none;"></div>
+		</div>
 	</div>
 	<div class="survey">
 		<div class="survey-close" onclick="this.parentElement.remove();">&times;</div>
@@ -771,9 +851,160 @@ monitorBattery();
 		monitorBattery();
 	</script>
 	<script>
+		const snakeContainer = document.getElementById('snake-container');
+		const GRID_SIZE = 20;
+		const INITIAL_SPEED = 150; // milliseconds
+		let snake = [{ x: 10, y: 10 }];
+		let food = { x: 5, y: 5 };
+		let dx = 0;
+		let dy = 0;
+		let speed = INITIAL_SPEED;
+		let snakeActive = false;
+		let gameInterval;
+		function createGrid() {
+			const topRowElement = document.createElement('div');
+			topRowElement.classList.add('snake-row');
+			topRowElement.innerHTML = ">&nbsp;" + "__".repeat(GRID_SIZE);
+			snakeContainer.appendChild(topRowElement);
+			for (let row = 0; row < GRID_SIZE; row++) {
+				const rowElement = document.createElement('div');
+				rowElement.classList.add('snake-row');
+				rowElement.innerHTML = "><b>⎹</b>";
+				snakeContainer.appendChild(rowElement);
+				for (let col = 0; col < GRID_SIZE; col++) {
+					const cell = document.createElement('div');
+					cell.classList.add('snake-cell');
+					cell.id = `snake-cell-${row}-${col}`;
+					rowElement.appendChild(cell);
+				}
+				rowElement.innerHTML += "<b>⎸</b>";
+			}
+			const bottomRowElement = document.createElement('div');
+			bottomRowElement.classList.add('snake-row');
+			bottomRowElement.innerHTML = ">&nbsp;" + "‾‾".repeat(GRID_SIZE);
+			snakeContainer.appendChild(bottomRowElement);
+		}
+		function renderSnake() {
+			snake.forEach(segment => {
+				const segmentElement = document.getElementById(`snake-cell-${segment.y}-${segment.x}`);
+				segmentElement.classList.add('snake-segment');
+				//document.getElementById(`cell-${snake[0].y}-${snake[0].x}`).className = ("cell snake-segment");
+				document.getElementById(`snake-cell-${snake[0].y}-${snake[0].x}`).className = ((dx == 0 && dy == -1) ? "up" : (dx == 0 && dy == 1) ? "down" : (dx == -1 && dy == 0) ? "sleft" : (dx == 1 && dy == 0) ? "right" : "undefined") + " snake-cell snake-segment snake-head";
+			});
+		}
+		function clearSnake() {
+			const snakeSegments = document.querySelectorAll('.snake-segment');
+			snakeSegments.forEach(segment => {
+				segment.classList.remove("snake-segment");
+				segment.classList.remove("snake-head");
+			});
+		}
+		function renderFood() {
+			const foodElement = document.getElementById(`snake-cell-${food.y}-${food.x}`);
+			foodElement.classList.add('food');
+		}
+		function clearFood() {
+			const foodElement = document.querySelector('.food');
+			if (foodElement) {
+				foodElement.classList.remove('food');
+			}
+		}
+		function moveSnake() {
+			const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+			snake.unshift(head);
+			// Warp the snake when it hits the boundary
+			if (head.x < 0) head.x = GRID_SIZE - 1;
+			if (head.x >= GRID_SIZE) head.x = 0;
+			if (head.y < 0) head.y = GRID_SIZE - 1;
+			if (head.y >= GRID_SIZE) head.y = 0;
+			if (head.x === food.x && head.y === food.y) {
+				clearFood();
+				createFood();
+				speed -= 10;
+			} else {
+				snake.pop();
+			}
+		}
+		function createFood() {
+			const x = Math.floor(Math.random() * GRID_SIZE);
+			const y = Math.floor(Math.random() * GRID_SIZE);
+			food = { x, y };
+		}
+		function checkCollision() {
+			const head = snake[0];
+			return snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
+		}
+		function resetGame() {
+			clearInterval(gameInterval);
+			snake = [{ x: 10, y: 10 }];
+			dx = 0;
+			dy = 0;
+			speed = INITIAL_SPEED;
+			clearSnake();
+			clearFood();
+		}
+
+		function startGame() {
+			renderSnake();
+			createFood();
+			gameInterval = setInterval(gameLoop, speed);
+		}
+
+		function gameLoop() {
+			clearSnake();
+			moveSnake();
+			renderSnake();
+			renderFood();
+			if (checkCollision()) {
+				print("Game over.");
+				resetGame();
+				snakeContainer.style.display = "none";
+				setTimeout(function(){
+					print();
+					input(">");
+				}, 0);
+				if (document.getElementById("commandLineInput")) {
+					document.getElementsByClassName("line")[document.getElementsByClassName("line").length - 1].textContent += document.getElementById("commandLineInput").value;
+					document.getElementsByClassName("line")[document.getElementsByClassName("line").length - 1].innerHTML = "Press enter to close game><br>";
+					document.getElementById("commandLineInput").remove();
+				}
+				return;
+			}
+		}
+		document.addEventListener('keydown', e => {
+			switch (e.key) {
+				case 'ArrowUp':
+					if (dy !== 1) {
+						dx = 0;
+						dy = -1;
+					}
+					break;
+				case 'ArrowDown':
+					if (dy !== -1) {
+						dx = 0;
+						dy = 1;
+					}
+					break;
+				case 'ArrowLeft':
+					if (dx !== 1) {
+						dx = -1;
+						dy = 0;
+					}
+					break;
+				case 'ArrowRight':
+					if (dx !== -1) {
+						dx = 1;
+						dy = 0;
+					}
+					break;
+			}
+		});
+		createGrid();
+	</script>
+	<script>
 		const commandLine = document.getElementById("commandLine");
 		const caret = document.getElementById("textcaret");
-		const version = "7.0.0";
+		const version = "7.0.2";
 
 		var commands = [
 			[
@@ -803,6 +1034,39 @@ monitorBattery();
 				}
 			],
 			[
+				["game", "play"],
+				function () {
+					if (arguments[0].length > 1) {
+						if (arguments[0][1] == "snake") {
+							print().after(snakeContainer);
+							snakeContainer.style.display = "";
+							startGame();
+							print("Instructions: ");
+							print("Control the snake with the arrow keys.");
+							print("Do not touch your tail, or you will die.");
+							print();
+							customInput("Press enter to close game>").addEventListener("keypress", function () {
+								if (event.keyCode == 13) {
+									resetGame();
+									print("Exiting game and entering regular command line . . . ");
+									print();
+									snakeContainer.style.display = "none";
+									input(">");
+								}
+							});
+						} else {
+							print(`'${arguments[0][1]}' is not a valid game.`);
+							print();
+							input(">");
+						}
+					} else {
+						print("The game must be a valid game name, ex. 'GAME SNAKE'");
+						print();
+						input(">");
+					}
+				}
+			],
+			[
 				["guide"],
 				function () {
 					switchPage(3);
@@ -818,6 +1082,7 @@ monitorBattery();
 						print("For more information on a specific command, type HELP [command].")
 						print("CHANGES\t\t\tOpens the changelog page.");
 						print("CLOAK\t\t\tOpens a cloaked tab.");
+						print("GAME\t\t\tPlays a game right here in the command line.");
 						print("GUIDE\t\t\tOpens the guide.");
 						print("HELP\t\t\tProvides information for commands.");
 						print("PIPED\t\t\tOpens the specified Piped ID.");
@@ -830,6 +1095,7 @@ monitorBattery();
 						var commandDescriptions = [
 							["changes", "Typing this command will open the changelog in the left-hand side. \nParameter(s): None. \nAlias(es): CHANGES, CHANGELOG, LOG."],
 							["cloak", "Typing this command will provide an input to open a website without logging it in your search history. \nParameter(s): URL. \nAlias(es): CLOAK, OPEN, URL, AB."],
+							["game", "Typing this command will open a game displaying in the command line. \nParameter(s): Game. \nAlias(es): GAME, PLAY."],
 							["guide", "Typing this command will open the user guide in the left-hand side. \nParameter(s): None. \nAlias(es): None."],
 							["help", "Typing this command alone will provide a list of commands, or provide help on a specific command. \nParameter(s): Command. \nAlias(es): HELP, INFO."],
 							["piped", "Typing this command will provide an input to open Piped, a YouTube alternative. \nParameter(s): Number. \nAlias(es): PIPED, YOUTUBE."],
@@ -917,6 +1183,7 @@ monitorBattery();
 			line.className = "line";
 			line.innerHTML = text.replaceAll("\n", "<br>") + "<br>";
 			commandLine.appendChild(line);
+			return line;
 		}
 
 		function input(text="") {
