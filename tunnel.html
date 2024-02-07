@@ -956,10 +956,10 @@ monitorBattery();
 			renderSnake();
 			renderFood();
 			if (checkCollision()) {
-				print("Game over.");
 				resetGame();
 				snakeContainer.style.display = "none";
 				setTimeout(function(){
+					print("Game over. You touched your tail.");
 					print();
 					input(">");
 				}, 0);
@@ -1038,6 +1038,7 @@ monitorBattery();
 				function () {
 					if (arguments[0].length > 1) {
 						if (arguments[0][1] == "snake") {
+							resetGame();
 							print().after(snakeContainer);
 							snakeContainer.style.display = "";
 							startGame();
@@ -1054,6 +1055,11 @@ monitorBattery();
 									input(">");
 								}
 							});
+						} else if (arguments[0][1] == "help") {
+							print("HELP\t\t\tProvides a list of all games and a short description.");
+							print("SNAKE\t\t\tThe snake game, in HTML.");
+							print();
+							input(">")
 						} else {
 							print(`'${arguments[0][1]}' is not a valid game.`);
 							print();
@@ -1082,7 +1088,7 @@ monitorBattery();
 						print("For more information on a specific command, type HELP [command].")
 						print("CHANGES\t\t\tOpens the changelog page.");
 						print("CLOAK\t\t\tOpens a cloaked tab.");
-						print("GAME\t\t\tPlays a game right here in the command line.");
+						print("GAME\t\t\tPlays a game right here in the command line. \n\t\t\t\tType HELP GAME for more info.\n");
 						print("GUIDE\t\t\tOpens the guide.");
 						print("HELP\t\t\tProvides information for commands.");
 						print("PIPED\t\t\tOpens the specified Piped ID.");
@@ -1095,7 +1101,7 @@ monitorBattery();
 						var commandDescriptions = [
 							["changes", "Typing this command will open the changelog in the left-hand side. \nParameter(s): None. \nAlias(es): CHANGES, CHANGELOG, LOG."],
 							["cloak", "Typing this command will provide an input to open a website without logging it in your search history. \nParameter(s): URL. \nAlias(es): CLOAK, OPEN, URL, AB."],
-							["game", "Typing this command will open a game displaying in the command line. \nParameter(s): Game. \nAlias(es): GAME, PLAY."],
+							["game", "Typing this command will open a game displaying in the command line. \nType GAME HELP for a list of games. \nParameter(s): Game, HELP. \nAlias(es): GAME, PLAY."],
 							["guide", "Typing this command will open the user guide in the left-hand side. \nParameter(s): None. \nAlias(es): None."],
 							["help", "Typing this command alone will provide a list of commands, or provide help on a specific command. \nParameter(s): Command. \nAlias(es): HELP, INFO."],
 							["piped", "Typing this command will provide an input to open Piped, a YouTube alternative. \nParameter(s): Number. \nAlias(es): PIPED, YOUTUBE."],
