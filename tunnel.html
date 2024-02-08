@@ -1071,6 +1071,7 @@ monitorBattery();
 				mazeCell.classList.add('maze-end');
 			}
 			mazeCell.addEventListener('mousedown', () => {
+			if (maze.style.display != "none") {
 				if (setStart == true) {
 					setStartPoint(mazeCell);
 					setStart = false;
@@ -1085,21 +1086,24 @@ monitorBattery();
 					toggleWall(mazeCell);
 				}
 				erasePath();
+				}
 			});
 			mazeCell.addEventListener('mouseover', (event) => {
-				if (event.buttons === 1) {
-					if (setStart == true) {
-						setStartPoint(mazeCell);
-						setStart = false;
-						setEnd = false;
-						document.body.className = "";
-					} else if (setEnd == true) {
-						setEndPoint(mazeCell);
-						setStart = false;
-						setEnd = false;
-						document.body.className = "";
-					} else {
-						toggleWall(mazeCell);
+				if (maze.style.display != "none") {
+					if (event.buttons === 1) {
+						if (setStart == true) {
+							setStartPoint(mazeCell);
+							setStart = false;
+							setEnd = false;
+							document.body.className = "";
+						} else if (setEnd == true) {
+							setEndPoint(mazeCell);
+							setStart = false;
+							setEnd = false;
+							document.body.className = "";
+						} else {
+							toggleWall(mazeCell);
+						}
 					}
 				}
 			});
@@ -1344,16 +1348,17 @@ monitorBattery();
 							print("Do not touch your tail, or you will die.");
 							print();
 							customInput("Press ESC to close game>")
-							commandLine.addEventListener("keyup", function () {
+							var gameEventHandler = function () {
 								if (event.keyCode == 27) {
 									resetSnake();
 									print("Exiting game and entering regular command line . . . ");
 									print();
 									snakeContainer.style.display = "none";
 									input(">");
-									commandLine.removeEventListener("keyup", this);
+									window.removeEventListener("keyup", gameEventHandler);
 								}
-							});
+							}
+							window.addEventListener("keyup", gameEventHandler);
 						} else if (arguments[0][1] == "maze") {
 							print().after(maze);
 							maze.style.display = "";
@@ -1366,13 +1371,13 @@ monitorBattery();
 							print("Press the E key to set a ending position for the pathfinder.");
 							print();
 							customInput("Press ESC to close game>", 27);
-							document.addEventListener("keyup", function () {
+							var gameEventHandler = function () {
 								if (event.keyCode == 27) {
 									print("Exiting game and entering regular command line . . . ");
 									print();
 									maze.style.display = "none";
 									input(">");
-									document.removeEventListener("keyup", this);
+									window.removeEventListener("keyup", gameEventHandler);
 								} else if (event.keyCode == 67) {
 									clearMaze();
 								} else if (event.keyCode == 71) {
@@ -1388,10 +1393,12 @@ monitorBattery();
 									setStart = false;
 									setEnd = true;
 								}
-							});
+							}
+							window.addEventListener("keyup", gameEventHandler);
 						} else if (arguments[0][1] == "help") {
-							print("HELP\t\t\tProvides a list of all games and a short description.");
-							print("SNAKE\t\t\tThe snake game, in HTML.");
+							print("GAME HELP\t\t\tProvides a list of all games and a short description.");
+							print("GAME SNAKE\t\t\tThe snake game.");
+							print("GAME MAZE\t\t\tA maze creator with a pathfinding algorithm");
 							print();
 							input(">")
 						} else {
