@@ -518,6 +518,48 @@
 		.food::after {
 			content: '@\00a0';
 		}
+
+
+
+
+		.selectPoint {
+			cursor: crosshair;
+		}
+
+		.maze-container {
+			display: grid;
+			grid-template-columns: repeat(32, 2ch);
+			grid-template-rows: repeat(32, 12pt);
+			padding: 3pt 0.5ch;
+			width: fit-content;
+			cursor: default;
+			border: 1px solid #33a34f;
+		}
+		.maze-cell {
+			user-select: none;
+			cursor: pointer;
+		}
+
+		.maze-cell::after {
+			content: '\00a0\00a0';
+		}
+
+		.maze-cell:hover::after {
+			content: '+\00a0';
+		}
+
+		.maze-wall::after {
+			content: '+\00a0';
+		}
+		.maze-path::after {
+			content: '#\00a0';
+		}
+		.maze-start::after {
+			content: 'S\00a0' !important;
+		}
+		.maze-end::after {
+			content: 'E\00a0' !important;
+		}
 	</style>
 </head>
 <body>
@@ -573,6 +615,11 @@
 				
 				<label for="togglePublic">Show only full releases.</label>
 				
+				<h2 class="public" style="margin-bottom: 5px;">v7.0.3</span></h2>
+				<ul class="public">
+					<li>Added maze game to command line.</li>
+				</ul>
+
 				<h2 class="public" style="margin-bottom: 5px;">v7.0.2</span></h2>
 				<ul class="public">
 					<li>Added games to command line.</li>
@@ -776,6 +823,7 @@
 		</div>
 		<div id="commandLine" onclick="if(event.target.className!='line'&&document.getElementById('commandLineInput')){this.getElementsByTagName('input')[this.getElementsByTagName('input').length-1].focus();}">
 			<div id="snake-container" style="display: none;"></div>
+			<div class="maze-container" style="display: none;" id="maze"></div>
 		</div>
 	</div>
 	<div class="survey">
@@ -858,9 +906,9 @@ monitorBattery();
 		let food = { x: 5, y: 5 };
 		let dx = 0;
 		let dy = 0;
-		let speed = INITIAL_SPEED;
+		let snakeGameSpeed = INITIAL_SPEED;
 		let snakeActive = false;
-		let gameInterval;
+		let snakeGameInterval;
 		function createGrid() {
 			const topRowElement = document.createElement('div');
 			topRowElement.classList.add('snake-row');
@@ -920,7 +968,7 @@ monitorBattery();
 			if (head.x === food.x && head.y === food.y) {
 				clearFood();
 				createFood();
-				speed -= 10;
+				snakeGameSpeed -= 10;
 			} else {
 				snake.pop();
 			}
@@ -934,29 +982,30 @@ monitorBattery();
 			const head = snake[0];
 			return snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
 		}
-		function resetGame() {
-			clearInterval(gameInterval);
+		function resetSnake() {
+			clearInterval(snakeGameInterval);
+			snakeGameInterval = null;
 			snake = [{ x: 10, y: 10 }];
 			dx = 0;
 			dy = 0;
-			speed = INITIAL_SPEED;
+			snakeGameSpeed = INITIAL_SPEED;
 			clearSnake();
 			clearFood();
 		}
 
-		function startGame() {
+		function startSnake() {
 			renderSnake();
 			createFood();
-			gameInterval = setInterval(gameLoop, speed);
+			snakeGameInterval = setInterval(snakeGameLoop, snakeGameSpeed);
 		}
 
-		function gameLoop() {
+		function snakeGameLoop() {
 			clearSnake();
 			moveSnake();
 			renderSnake();
 			renderFood();
 			if (checkCollision()) {
-				resetGame();
+				resetSnake();
 				snakeContainer.style.display = "none";
 				setTimeout(function(){
 					print("Game over. You touched your tail.");
@@ -1002,9 +1051,257 @@ monitorBattery();
 		createGrid();
 	</script>
 	<script>
+		const maze = document.getElementById('maze');
+		let mazeCells = [];
+		const numRows = 32;
+		const numCols = 32;
+		const edgeIndices = getEdgeIndices();
+		let startCellIndex = 0;
+		let endCellIndex = numRows * numCols - 1;
+		var setStart = false;
+		var setEnd = false;
+		
+		// Create grid mazeCells
+		for (let i = 0; i < numRows * numCols; i++) {
+			const mazeCell = document.createElement('span');
+			mazeCell.classList.add('maze-cell');
+			if (i == startCellIndex) {
+				mazeCell.classList.add('maze-start');
+			} else if (i == endCellIndex) {
+				mazeCell.classList.add('maze-end');
+			}
+			mazeCell.addEventListener('mousedown', () => {
+				if (setStart == true) {
+					setStartPoint(mazeCell);
+					setStart = false;
+					setEnd = false;
+					document.body.className = "";
+				} else if (setEnd == true) {
+					setEndPoint(mazeCell);
+					setStart = false;
+					setEnd = false;
+					document.body.className = "";
+				} else {
+					toggleWall(mazeCell);
+				}
+				erasePath();
+			});
+			mazeCell.addEventListener('mouseover', (event) => {
+				if (event.buttons === 1) {
+					if (setStart == true) {
+						setStartPoint(mazeCell);
+						setStart = false;
+						setEnd = false;
+						document.body.className = "";
+					} else if (setEnd == true) {
+						setEndPoint(mazeCell);
+						setStart = false;
+						setEnd = false;
+						document.body.className = "";
+					} else {
+						toggleWall(mazeCell);
+					}
+				}
+			});
+			mazeCells.push(mazeCell);
+			maze.appendChild(mazeCell);
+		}
+		
+		// Function to set the start or end point
+		function setStartPoint(mazeCell) {
+			const index = mazeCells.indexOf(mazeCell);
+			if (!mazeCell.classList.contains('maze-wall')) {
+				if (!mazeCell.classList.contains('maze-start')) {
+					if (!mazeCell.classList.contains('maze-end')) {
+						if (startCellIndex !== index && endCellIndex !== index) {
+							mazeCells[startCellIndex].classList.remove('maze-start');
+							startCellIndex = index;
+							mazeCell.classList.add('maze-start');
+						}
+					}
+				}
+			} else {
+				print("The starting position cannot be inside a wall.");
+			}
+		}
+		
+		function setEndPoint(mazeCell) {
+			const index = mazeCells.indexOf(mazeCell);
+			if (!mazeCell.classList.contains('maze-wall')) {
+				if (!mazeCell.classList.contains('maze-start')) {
+					if (!mazeCell.classList.contains('maze-end')) {
+						if (startCellIndex !== index && endCellIndex !== index) {
+							mazeCells[endCellIndex].classList.remove('maze-end');
+							endCellIndex = index;
+							mazeCell.classList.add('maze-end');
+						}
+					}
+				}
+			} else {
+				print("The ending position cannot be inside a wall.");
+			}
+		}
+		
+		function generateMaze() {
+				erasePath();
+		
+				// Initialize maze grid
+				const maze = Array.from({ length: numRows }, () => Array(numCols).fill(true));
+		
+				// Initialize starting point
+				const startRow = Math.floor(Math.random() * numRows);
+				const startCol = Math.floor(Math.random() * numCols);
+				maze[startRow][startCol] = false;
+		
+				const frontier = [{ row: startRow, col: startCol }];
+		
+				while (frontier.length) {
+						const randomIndex = Math.floor(Math.random() * frontier.length);
+						const current = frontier[randomIndex];
+						frontier.splice(randomIndex, 1);
+		
+						const neighbors = [
+								{ row: current.row - 2, col: current.col },
+								{ row: current.row + 2, col: current.col },
+								{ row: current.row, col: current.col - 2 },
+								{ row: current.row, col: current.col + 2 },
+						].filter(neighbor => neighbor.row >= 0 && neighbor.row < numRows && neighbor.col >= 0 && neighbor.col < numCols);
+		
+						for (const neighbor of neighbors) {
+								if (maze[neighbor.row][neighbor.col]) {
+										maze[current.row + (neighbor.row - current.row) / 2][current.col + (neighbor.col - current.col) / 2] = false;
+										maze[neighbor.row][neighbor.col] = false;
+										frontier.push(neighbor);
+								}
+						}
+				}
+		
+				// Apply walls based on the generated maze
+				mazeCells.forEach((mazeCell, index) => {
+						const row = Math.floor(index / numCols);
+						const col = index % numCols;
+						if (maze[row][col]) {
+								mazeCell.classList.add('maze-wall');
+						} else {
+								mazeCell.classList.remove('maze-wall');
+						}
+						if (index == startCellIndex) {
+							mazeCell.classList.remove('maze-wall');
+						} else if (index == endCellIndex) {
+							mazeCell.classList.remove('maze-wall');
+						}
+				});
+		}
+		
+				
+		function clearMaze() {
+			// Create grid mazeCells
+			for (let i = 0; i < numRows * numCols; i++) {
+				maze.children[i].classList.remove("maze-cell", "maze-path", "maze-wall");
+			}
+		}
+		
+		function erasePath() {
+			// Create grid mazeCells
+			for (let i = 0; i < numRows * numCols; i++) {
+				maze.children[i].classList.remove('maze-path');
+			
+			}
+		}
+
+		// A* Maze solving function
+		function solveMaze() {
+			resetMaze();
+			let solutionFound = false;
+
+			solutionFound = findPath(startCellIndex, endCellIndex);
+
+			if (!solutionFound) {
+				print('No solution found. Try moving the starting or ending point.');
+			}
+		}
+
+		function findPath(start, end) {
+			const visited = new Array(numRows * numCols).fill(false);
+			const queue = [{ index: start, path: [] }];
+
+			while (queue.length > 0) {
+				const { index, path } = queue.shift();
+
+				if (index === end) {
+					highlightPath(path);
+					return true;
+				}
+
+				if (!visited[index]) {
+					visited[index] = true;
+					const neighbors = getNeighbors(index);
+					for (const neighbor of neighbors) {
+						if (!visited[neighbor] && !mazeCells[neighbor].classList.contains('maze-wall')) {
+							queue.push({ index: neighbor, path: [...path, index] });
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		function getEdgeIndices() {
+			const edgeIndices = [];
+
+			for (let i = 0; i < numRows; i++) {
+				edgeIndices.push(i * numCols); // Left edge
+				edgeIndices.push((i + 1) * numCols - 1); // Right edge
+			}
+
+			for (let j = 1; j < numCols - 1; j++) {
+				edgeIndices.push(j); // Top edge
+				edgeIndices.push((numRows - 1) * numCols + j); // Bottom edge
+			}
+
+			return edgeIndices;
+		}
+
+		function getNeighbors(index) {
+			const neighbors = [];
+			const row = Math.floor(index / numCols);
+			const col = index % numCols;
+
+			if (row > 0) neighbors.push(index - numCols); // Top
+			if (row < numRows - 1) neighbors.push(index + numCols); // Bottom
+			if (col > 0) neighbors.push(index - 1); // Left
+			if (col < numCols - 1) neighbors.push(index + 1); // Right
+
+			return neighbors;
+		}
+
+		function highlightPath(path) {
+			for (const index of path) {
+				mazeCells[index].classList.add('maze-path');
+			}
+			mazeCells[startCellIndex].classList.add('maze-start');
+			mazeCells[endCellIndex].classList.add('maze-end');
+		}
+
+		function resetMaze() {
+			mazeCells.forEach(mazeCell => {
+				mazeCell.classList.remove('maze-path');
+			});
+		}
+
+		function toggleWall(mazeCell) {
+			if (!mazeCell.classList.contains("maze-start") && !mazeCell.classList.contains("maze-end")) {
+				mazeCell.classList.toggle('maze-wall');
+			} else {
+				print("You cannot put a wall where the starting or ending position is.");
+			}
+		}
+	</script>
+		<script>
 		const commandLine = document.getElementById("commandLine");
 		const caret = document.getElementById("textcaret");
-		const version = "7.0.2";
+		const version = "7.0.3";
 
 		var commands = [
 			[
@@ -1018,7 +1315,7 @@ monitorBattery();
 			[
 				["cloak", "open", "url", "ab"],
 				function () {
-					customInput("Enter URL: ").addEventListener("keypress", function () {
+					customInput("Enter URL: ").addEventListener("keyup", function () {
 						if (event.keyCode == 13) {
 							if (this.value.startsWith("https://")) {
 								blank(this.value);
@@ -1038,21 +1335,58 @@ monitorBattery();
 				function () {
 					if (arguments[0].length > 1) {
 						if (arguments[0][1] == "snake") {
-							resetGame();
+							resetSnake();
 							print().after(snakeContainer);
 							snakeContainer.style.display = "";
-							startGame();
+							startSnake();
 							print("Instructions: ");
 							print("Control the snake with the arrow keys.");
 							print("Do not touch your tail, or you will die.");
 							print();
-							customInput("Press enter to close game>").addEventListener("keypress", function () {
-								if (event.keyCode == 13) {
-									resetGame();
+							customInput("Press ESC to close game>")
+							commandLine.addEventListener("keyup", function () {
+								if (event.keyCode == 27) {
+									resetSnake();
 									print("Exiting game and entering regular command line . . . ");
 									print();
 									snakeContainer.style.display = "none";
 									input(">");
+									commandLine.removeEventListener("keyup", this);
+								}
+							});
+						} else if (arguments[0][1] == "maze") {
+							print().after(maze);
+							maze.style.display = "";
+							print("Instructions: ");
+							print("Drag your mouse across the canvas to create a maze.");
+							print("Press the C key to clear the maze.");
+							print("Press the G key to generate a maze randomly.");
+							print("Press the Enter key to solve the maze.");
+							print("Press the S key to set a starting position for the pathfinder.");
+							print("Press the E key to set a ending position for the pathfinder.");
+							print();
+							customInput("Press ESC to close game>", 27);
+							document.addEventListener("keyup", function () {
+								if (event.keyCode == 27) {
+									print("Exiting game and entering regular command line . . . ");
+									print();
+									maze.style.display = "none";
+									input(">");
+									document.removeEventListener("keyup", this);
+								} else if (event.keyCode == 67) {
+									clearMaze();
+								} else if (event.keyCode == 71) {
+									generateMaze();
+								} else if (event.keyCode == 13) {
+									solveMaze();
+								} else if (event.keyCode == 83) {
+									document.body.className = 'selectPoint';
+									setStart = true;
+									setEnd = false;
+								} else if (event.keyCode == 69) {
+									document.body.className = 'selectPoint';
+									setStart = false;
+									setEnd = true;
 								}
 							});
 						} else if (arguments[0][1] == "help") {
@@ -1066,9 +1400,11 @@ monitorBattery();
 							input(">");
 						}
 					} else {
-						print("The game must be a valid game name, ex. 'GAME SNAKE'");
+						print("GAME HELP\t\t\tProvides a list of all games and a short description.");
+						print("GAME SNAKE\t\t\tThe snake game.");
+						print("GAME MAZE\t\t\tA maze creator with a pathfinding algorithm");
 						print();
-						input(">");
+						input(">")
 					}
 				}
 			],
@@ -1123,7 +1459,7 @@ monitorBattery();
 			[
 				["piped", "youtube", "yt"],
 				function () {
-					customInput("Enter Piped ID: ").addEventListener("keypress", function () {
+					customInput("Enter Piped ID: ").addEventListener("keyup", function () {
 						if (event.keyCode == 13) {
 							if (isNaN(Number(this.value)) != true) {
 								if (Number(this.value) >= 0 && Number(this.value) <= YTURLs.length-1) {
@@ -1151,7 +1487,7 @@ monitorBattery();
 			[
 				["proxy"],
 				function () {
-					customInput("Enter proxy ID: ").addEventListener("keypress", function () {
+					customInput("Enter proxy ID: ").addEventListener("keyup", function () {
 						if (event.keyCode == 13) {
 							if (isNaN(Number(this.value)) != true) {
 								if (Number(this.value) >= 0 && Number(this.value) <= PROXYURLs.length-1) {
@@ -1204,7 +1540,7 @@ monitorBattery();
 			inputter.setAttribute("autocorrect", "off");
 			inputter.setAttribute("autocomplete", "off");
 			inputter.setAttribute("spellcheck", "false");
-			inputter.addEventListener("keypress", function () {
+			inputter.addEventListener("keyup", function () {
 				if (event.keyCode == 13) {
 					var command = (this.value).trimStart().split(" ");
 					if (command[0].trim() != "") {
@@ -1243,7 +1579,7 @@ monitorBattery();
 			return inputter;
 		}
 
-		function customInput(text="") {
+		function customInput(text="", closingID=13) {
 			text = text.toString();
 			const line = document.createElement("span");
 			line.className = "line";
@@ -1255,9 +1591,9 @@ monitorBattery();
 			inputter.setAttribute("autocorrect", "off");
 			inputter.setAttribute("autocomplete", "off");
 			inputter.setAttribute("spellcheck", "false");
-			inputter.addEventListener("keypress", function () {
-				if (event.keyCode == 13) {
-					setTimeout(function(){
+			inputter.addEventListener("keyup", function () {
+				if (event.keyCode == closingID) {
+					setTimeout(function () {
 						line.textContent += inputter.value;
 						line.innerHTML += "<br>";
 						inputter.remove();
