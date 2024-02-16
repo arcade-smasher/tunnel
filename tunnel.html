@@ -568,7 +568,6 @@
 		<div class="left">
 		
 			<div id="main1" class="document">
-				<span style="position: absolute;right: 15px;top: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(2)">Changelog ></span>
 				<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
 				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1>Tunnel</h1>
@@ -602,149 +601,6 @@
 				</div>
 			</div>
 
-			<div id="main2" class="document" style="display:none;">
-				<style id="priv">.private{display: none;}</style>
-				<style id="pub">.public{}</style>
-				<style id="pubnotpriv">.publicnotprivate{}</style>
-				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
-				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
-				<h1 style="margin-bottom: 0;">Tunnel</h1>
-				<span>v7.0.2</span><br><br>
-
-				<input style="margin-right: 5px;" type="checkbox" checked="true" id="togglePublic" onclick="if (this.checked == false) {document.getElementById('priv').innerHTML='.private{}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{display: none;}';} else {document.getElementById('priv').innerHTML = '.private{display: none;}';document.getElementById('pubnotpriv').innerHTML='.publicnotprivate{}';}">
-				
-				<label for="togglePublic">Show only full releases.</label>
-				
-				<h2 class="public" style="margin-bottom: 5px;">v7.0.3</span></h2>
-				<ul class="public">
-					<li>Added maze game to command line.</li>
-				</ul>
-
-				<h2 class="public" style="margin-bottom: 5px;">v7.0.2</span></h2>
-				<ul class="public">
-					<li>Added games to command line.</li>
-					<li>Added snake to games in command line.</li>
-					<li>Fixed multiple sizing bugs.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v7.0.1</span></h2>
-				<ul class="private">
-					<li>Added proxy info.</li>
-					<li>Added topbar with time and battery percentage.</li>
-					<li>Made the help command work fully.</li>
-					<li>Added command aliases.</li>
-				</ul>
-
-				<h2 class="public" style="margin-bottom: 5px;">v7<span class="private">.0.0</span></span></h2>
-				<ul class="public">
-					<li>Redesigned UI.</li>
-					<li>Added more proxies.</li>
-					<li>Added a control panel.</li>
-					<li>Added a hacker grid.</li>
-					<li class="publicnotprivate">Added proxy info.</li>
-					<li class="publicnotprivate">Added topbar with time and battery percentage.</li>
-					<li class="publicnotprivate">Made the help command work fully.</li>
-					<li class="publicnotprivate">Added command aliases.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v6.1.1</span></h2>
-				<ul class="private">
-					<li>Added CSS support for more browsers.</li>
-					<li>Changed CSS formatting.</li>
-				</ul>
-
-				<h2 class="public" style="margin-bottom: 5px;">v6.1<span class="private">.0</span></h2>
-				<ul class="public">
-					<li>Added information on changelog to help page</li>
-					<li>Fixed update name error.</li>
-				</ul>
-			
-				<h2 class="public" style="margin-bottom: 5px;">v6<span class="private">.0.0</span></h2>
-				<ul class="public">
-					<li>Added help page.</li>
-					<li>Added more information tips.</li>
-					<li>Improved information tip UX.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v5.2.3</h2>
-				<ul class="private">
-					<li>Removed blocked and discontinued proxies.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v5.2.2</h2>
-				<ul class="private">
-					<li>Rewrote changelog page button code.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v5.2.1</h2>
-				<ul class="private">
-					<li>Cleaned up changelog page.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v5.2.0</h2>
-				<ul class="private">
-					<li>Removed blocked Piped links.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v5.1.0</h2>
-				<ul class="private">
-					<li>Cleaned up changelog page.</li>
-				</ul>
-
-				<h2 class="public" style="margin-bottom: 5px;">v5<span class="private">.0.0</span></h2>
-				<ul class="public">
-					<li>Added changelog page.</li>
-					<li class=".publicnotprivate">Fixed a minor HTML formatting error.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v4.2.0</h2>
-				<ul class="private">
-					<li>Added options to show releases in changelog page.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v4.1.0</h2>
-				<ul class="private">
-					<li>Fixed a minor HTML formatting error.</li>
-				</ul>
-
-				<h2 class="public" style="margin-bottom: 5px;">v4<span class="private">.0.0</span></h2>
-				<ul class="public">
-					<li>Added more proxies.</li>
-					<li class="publicnotprivate">Added Piped.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v3.1.0</h2>
-				<ul class="private">
-					<li>Added Piped.</li>
-				</ul>
-
-
-				<h2 class="public" style="margin-bottom: 5px;">v3<span class="private">.0.0</span></h2>
-				<ul class="public">
-					<li>Made proxies openable by ID.</li>
-					<li>Removed proxy buttons.</li>
-					<li>Changed description.</li>
-				</ul>
-
-
-				<h2 class="public" style="margin-bottom: 5px;">v2<span class="private">.0.0</span></h2>
-				<ul class="public">
-					<li class="publicnotprivate">Added 2 different proxy buttons.</li>
-					<li class="private">Added another proxy button.</li>
-					<li>Changed description.</li>
-				</ul>
-
-				<h2 class="private" style="margin-bottom: 5px;">v1.5.0</h2>
-				<ul class="private">
-					<li>Added a proxy button.</li>
-				</ul>
-
-				<h2 class="public" style="margin-bottom: 5px;">v1<span class="private">.0.0</span></h2>
-				<ul class="public">
-					<li>Added an option to open custom about:blank tabs.</li>
-				</ul>
-			</div>
-
 			<div id="main3" class="document" style="display:none;">
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
 				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
@@ -770,11 +626,6 @@
 
 						<h3>How do I know what proxy each ID corresponds to?</h3>
 							<p><u onclick="switchPage(4)">Click here</u> for a list of IDs and what proxy they take you to.</p><br><br>
-
-					<h2>Changelog page</h2>
-						<p>If you noticed the help button, you probably noticed the changelog button in the top right corner. <br><br>
-						It is just a changelog, listing what updates Tunnel has gone through. <br><br>
-						There is a button to see advanced updates, which shows advanced updates that might not be full releases.</p><br><br>
 						
 					<h2>Command Line</h2>
 						<p>The command line is an alternative way to open proxies or cloak tabs. <br><br>
@@ -1305,17 +1156,9 @@ monitorBattery();
 		<script>
 		const commandLine = document.getElementById("commandLine");
 		const caret = document.getElementById("textcaret");
-		const version = "7.0.3";
+		const version = "7.0.4";
 
 		var commands = [
-			[
-				["changes", "changelog", "log"],
-				function () {
-					switchPage(2);
-					print();
-					input(">");
-				}
-			],
 			[
 				["cloak", "open", "url", "ab"],
 				function () {
@@ -1428,8 +1271,7 @@ monitorBattery();
 				function () {
 					if (arguments[0].length == 1) {
 						console.log(arguments);
-						print("For more information on a specific command, type HELP [command].")
-						print("CHANGES\t\t\tOpens the changelog page.");
+						print("For more information on a specific command, type HELP [command].");
 						print("CLOAK\t\t\tOpens a cloaked tab.");
 						print("GAME\t\t\tPlays a game right here in the command line. \n\t\t\t\tType HELP GAME for more info.\n");
 						print("GUIDE\t\t\tOpens the guide.");
@@ -1442,7 +1284,6 @@ monitorBattery();
 						input(">");
 					} else {
 						var commandDescriptions = [
-							["changes", "Typing this command will open the changelog in the left-hand side. \nParameter(s): None. \nAlias(es): CHANGES, CHANGELOG, LOG."],
 							["cloak", "Typing this command will provide an input to open a website without logging it in your search history. \nParameter(s): URL. \nAlias(es): CLOAK, OPEN, URL, AB."],
 							["game", "Typing this command will open a game displaying in the command line. \nType GAME HELP for a list of games. \nParameter(s): Game, HELP. \nAlias(es): GAME, PLAY."],
 							["guide", "Typing this command will open the user guide in the left-hand side. \nParameter(s): None. \nAlias(es): None."],
