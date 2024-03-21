@@ -222,7 +222,8 @@
 			overflow: auto;
 			display: absolute;
 			min-width: 500px;
-			max-width: 500px;
+			width: 50%;
+			max-width: 100%;
 			min-height: 100%;
 			box-sizing: border-box;
 			padding-top: 0;
@@ -375,13 +376,16 @@
 			color: gray;
 		}
 
-		#main3, #main4 {
+		#main3, #main4, #main6 {
 			padding-left: 50px;
 			padding-right: 50px;
 		}
 
-		#main3 p {
+		#main3 p, #main6 p {
 			text-align: left;
+		}
+
+		#main3 p {
 			line-height: 1.5;
 		}
 
@@ -568,6 +572,7 @@
 		<div class="left">
 		
 			<div id="main1" class="document">
+				<span style="position: absolute;top: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(5)">Coming soon!</span>
 				<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
 				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1>Tunnel</h1>
@@ -602,6 +607,7 @@
 			</div>
 
 			<div id="main3" class="document" style="display:none;">
+				<span style="position: absolute;top: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(5)">Coming soon!</span>
 				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
 				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
@@ -611,18 +617,17 @@
 						This will <b>not</b> unblock the link, it will simply just hide it from your search history.</p>
 						
 						<h3>Link format</h3>
-							<p>Every link must start with <code>https://</code>, otherwise it will not work. <br><br>
-							For example, if you have the link <code>coolmathgames.com</code>, type in <code><b>https://</b>coolmathgames.com</code></p><br><br>
+							<p>Links must be a valid URL, either in the format <code>https://example.com</code> or just <code>example.com</code></p><br><br>
 
 					<h2>IDs</h2>
 						<p>To open a proxy or Piped, simply input a number between <b>0</b> and the number listed in the number input. <br><br>
-						For example, the Piped input has the numbers <b>0 - 9</b>, so input a number between <b>0</b> and <b>9</b>.</p>
+						For example, the Piped input has the numbers <b>0 - 5</b>, so input a number between <b>0</b> and <b>5</b>.</p>
 						
 						<h3>Why so many numbers?</h3>
 							<p>Each number corresponds to a different link. If one of the links get blocked, there are many other links to choose from.</p>
 
 						<h3>What if a link doesn't work?</h3>
-							<p>If a link doesn't work, the likeliest reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
+							<p>If a link doesn't work, the most likely reason is that it just got blocked. It will be removed from the Tunnel shortly.</p>
 
 						<h3>How do I know what proxy each ID corresponds to?</h3>
 							<p><u onclick="switchPage(4)">Click here</u> for a list of IDs and what proxy they take you to.</p><br><br>
@@ -636,40 +641,39 @@
 				<span style="position: fixed !important;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1 style="margin-bottom: 0;">Tunnel</h1>
 				<span>ID list</span><br><br>
-<!--					<h2>0 - 2</h2>
-						Name: Interstellar<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
-						Speed: <i class="fa-solid fa-gauge"></i> Normal<br><br>
+			</div>
+			<div id="main5" class="document" style="display:none;">
+				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<span style="position: fixed !important;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
+				<h1 style="margin-bottom: 0;">Tunnel</h1>
+				<span style="text-decoration: underline;cursor: pointer;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSfY859Z3fncZPh4nIr497Cp6-kRaZXFtrwAWKQzAGWzs3tNqg/viewform?usp=sf_link');">Request a feature or show support for one</span><br><br>
+				<span>Coming soon</span><br><br>
+				<h2>Confirmed</h2>
+					<ul>
+						<li style="text-decoration: underline;cursor: help;" onclick="switchPage(6);">Tunnel OS</li>
+					</ul>
 
-					<h2>3</h2>
-						Name: Sodium<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
-						Speed: <i class="fa-solid fa-gauge"></i> Normal<br><br> -->
+				<h2>Maybe</h2>
+					<ul>
+						<li>Drop-down ID selection</li>
+					</ul>
 
-					<h2>0 - 3</h2>
-						Name: Astroid<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
-						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> Slow<br><br>
+				<h2>Unlikely</h2>
+					<ul>
+						<li>None!</li>
+					</ul>
+			</div>
+			<div id="main6" class="document" style="display:none;">
+				<span style="position: absolute;left: 15px;top: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(1)">&lt; Tunnel</span>
+				<span style="position: fixed !important;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
+				<h1 style="margin-bottom: 0;">Tunnel</h1>
+				<span>Tunnel OS</span><br><br>
+				<h2>What is Tunnel OS?</h2>
+					<p>Tunnel OS is going to be a complete rewrite of tunnel, designed to look and function like Tunnel. <br><br>
+					Tunnel OS will have custom proxies crafted just for Tunnel OS, ways to edit and test code, its own file system and much more!</p>
 
-<!--					<h2>8</h2>
-						Name: Croxy Proxy<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> N/A<br>
-						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> Meh<br><br>
-
- 					<h2>10</h2>
-						Name: Metallic<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> Broken<br>
-						Speed: <i class="fa-solid fa-gauge-high"></i> Fast<br><br> -->
-
-					<h2>4 - 26</h2>
-						Name: Rammerhead<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> N/A<br>
-						Speed: <i class="fa-solid fa-gauge"></i> Variable<br><br>
-
-					<h2>27 - 29</h2>
-						Name: Artclass<br>
-						Game count: <i class="fa-solid fa-gamepad"></i> High<br>
-						Speed: <i class="fa-solid fa-gauge-high fa-flip-horizontal"></i> N/A
+				<h2>Will Tunnel still be maintained after Tunnel OS's relesase?</h2>
+					<p>Always! My goal is to keep maintaining Tunnel (and Tunnel OS) until I physically can't anymore. Maintenence on Tunnel will be slowed, and possibly halted, though only until Tunnel OS doesn't need anymore attention.</p>
 			</div>
 		</div>
 		<div id="commandLine" onclick="if(event.target.className!='line'&&document.getElementById('commandLineInput')){this.getElementsByTagName('input')[this.getElementsByTagName('input').length-1].focus();}">
@@ -1156,7 +1160,7 @@ monitorBattery();
 		<script>
 		const commandLine = document.getElementById("commandLine");
 		const caret = document.getElementById("textcaret");
-		const version = "7.0.6";
+		const version = "7.0.7";
 
 		var commands = [
 			[
@@ -1169,7 +1173,7 @@ monitorBattery();
 								print();
 								input(">");
 							} else {
-								print("The link must start with 'https://'.");
+								blank("https://" + this.value);
 								print();
 								input(">");
 							}
@@ -1460,42 +1464,132 @@ monitorBattery();
 		input(">")
 	</script>
 	<script>
-		var PROXYURLs = [
-			// "https://meteor.newsofmaricopa.com/",
-			// "https://cultures.linexedu.eu/",
-			// "https://gravity.omniscien.cl/",
-			"https://sodium.onrender.com/",
-			// "https://astroid.gg/",
-			"https://login.tomahawkchurch.org/",
-			"https://cdn.tomahawkchurch.org/",
-			"https://statistics.geyikler.com/",
-			"https://fun1.frostbite.cc/",
-			"https://serrcosswilsonmallcreepscensions0phunky.eithermouse.com/",
-			"https://nebus.mathewparkin.com/",
-			"https://myown123.streetdirectory.sg/",
-			"https://messi.mctwisted.pro/",
-			"https://1800history.gotroot.pw/",
-			"https://1700history.gotroot.pw/",
-			"https://1600history.gotroot.pw/",
-			"https://fisdinstructure.gotroot.pw/",
-			"https://jeo.todotrabajo.ar/",
-			"https://jeo5.todotrabajo.ar/",
-			"https://jeo4.todotrabajo.ar/",
-			"https://jeo3.todotrabajo.ar/",
-			"https://jeo2.todotrabajo.ar/",
-			"https://jeo4.subcetatecity.ro/",
-			"https://jeo3.subcetatecity.ro/",
-			"https://jeo2.subcetatecity.ro/",
-			"https://jeo.subcetatecity.ro/",
-			"https://jeo.robot-agachado.org/",
-			"https://jeo4.goldsoft.rs/",
-			"https://jeo3.goldsoft.rs/",
-			"https://jeo2.goldsoft.rs/",
-			"https://jeo.goldsoft.rs/",
-			"https://ixl.plus/",
-			"https://chat.mathhelpnow.site/",
-			"https://todo.mathnotes.help/"
-		];
+		// var PROXYURLs = [
+		// 	"https://sodium.onrender.com/",
+		// 	"https://metallic.eu.org/",
+		// 	"https://statistics.geyikler.com/",
+		// 	"https://serrcosswilsonmallcreepscensions0phunky.eithermouse.com/",
+		// 	"https://nebus.mathewparkin.com/",
+		// 	"https://myown123.streetdirectory.sg/",
+		// 	"https://messi.mctwisted.pro/",
+		// 	"https://1800history.gotroot.pw/",
+		// 	"https://1700history.gotroot.pw/",
+		// 	"https://1600history.gotroot.pw/",
+		// 	"https://fisdinstructure.gotroot.pw/",
+		// 	"https://jeo.todotrabajo.ar/",
+		// 	"https://jeo5.todotrabajo.ar/",
+		// 	"https://jeo4.todotrabajo.ar/",
+		// 	"https://jeo3.todotrabajo.ar/",
+		// 	"https://jeo2.todotrabajo.ar/",
+		// 	"https://jeo4.subcetatecity.ro/",
+		// 	"https://jeo3.subcetatecity.ro/",
+		// 	"https://jeo2.subcetatecity.ro/",
+		// 	"https://jeo.subcetatecity.ro/",
+		// 	"https://jeo.robot-agachado.org/",
+		// 	"https://jeo4.goldsoft.rs/",
+		// 	"https://jeo3.goldsoft.rs/",
+		// 	"https://jeo2.goldsoft.rs/",
+		// 	"https://jeo.goldsoft.rs/",
+		// 	"https://ixl.plus/",
+		// 	"https://todo.mathnotes.help/"
+		// ];
+
+		var PROXYURLs = {
+			array: [
+				{
+					links: [
+						"https://sodium.onrender.com/"
+					],
+					name: "Sodium",
+					games: "High",
+					speed: "Normal"
+				},
+				{
+					links: [
+						"https://metallic.eu.org/"
+					],
+					name: "Metallic",
+					games: "Broken",
+					speed: "Fast"
+				},
+				{
+					links: [
+						"https://statistics.geyikler.com/"
+					],
+					name: "Astroid",
+					games: "High",
+					speed: "Slow"
+				},
+				{
+					links: [
+						"https://serrcosswilsonmallcreepscensions0phunky.eithermouse.com/",
+						"https://nebus.mathewparkin.com/",
+						"https://myown123.streetdirectory.sg/",
+						"https://messi.mctwisted.pro/",
+						"https://1800history.gotroot.pw/",
+						"https://1700history.gotroot.pw/",
+						"https://1600history.gotroot.pw/",
+						"https://fisdinstructure.gotroot.pw/",
+						"https://jeo.todotrabajo.ar/",
+						"https://jeo5.todotrabajo.ar/",
+						"https://jeo4.todotrabajo.ar/",
+						"https://jeo3.todotrabajo.ar/",
+						"https://jeo2.todotrabajo.ar/",
+						"https://jeo4.subcetatecity.ro/",
+						"https://jeo3.subcetatecity.ro/",
+						"https://jeo2.subcetatecity.ro/",
+						"https://jeo.subcetatecity.ro/",
+						"https://jeo.robot-agachado.org/",
+						"https://jeo4.goldsoft.rs/",
+						"https://jeo3.goldsoft.rs/",
+						"https://jeo2.goldsoft.rs/",
+						"https://jeo.goldsoft.rs/"
+					],
+					name: "Rammerhead",
+					games: "N/A",
+					speed: "Variable/Slow"
+				},
+				{
+					links: [
+						"https://ixl.plus/",
+						"https://todo.mathnotes.help/"
+					],
+					name: "Artclass",
+					games: "High",
+					speed: "Normal"
+				}
+			]
+		};
+
+		PROXYURLs.length = function () {
+			var result = 0;
+			for (i = 0; i < PROXYURLs.array.length; i++) {
+				result += PROXYURLs.array[i].links.length;
+			}
+			return result;
+		}();
+
+		var r = [];
+		PROXYURLs.array.forEach(function(proxy) {
+			r.push(...proxy.links);
+		});
+		PROXYURLs.all = r;
+		var iteratorStart = 0;
+		var iteratorEnd = 0;
+		var result = [];
+		for (var i = 0; i < PROXYURLs.array.length; i++) {
+			iteratorEnd = iteratorStart + PROXYURLs.array[i].links.length - 1;
+			result.push(...PROXYURLs.array[i].links);
+			document.getElementById("main4").innerHTML += `
+				<h2>${(iteratorStart)}${(iteratorStart !== iteratorEnd ? ` - ${iteratorEnd}` : "")}</h2>
+				Name: ${PROXYURLs.array[i].name}<br>
+				Game count: <i class="fa-solid fa-gamepad"></i> ${PROXYURLs.array[i].games}<br>
+				Speed: ${PROXYURLs.array[i].speed.toLowerCase().includes("slow") ? `<i class="fa-solid fa-gauge-high fa-flip-horizontal"></i>` : PROXYURLs.array[i].speed.toLowerCase().includes("normal") ? `<i class="fa-solid fa-gauge"></i>` : PROXYURLs.array[i].speed.toLowerCase().includes("fast") ? `<i class="fa-solid fa-gauge-high"></i>` : `<i class="fa-solid fa-gauge"></i>`} ${PROXYURLs.array[i].speed}<br><br>
+			`;
+			iteratorStart += PROXYURLs.array[i].links.length;
+		}
+
+
 
 		var YTURLs = [
 			"https://pipedapi.r4fo.com/",
@@ -1506,50 +1600,74 @@ monitorBattery();
 			"https://pipedapi.12a.app/"
 		];
 
-		document.getElementById("proxyInput").placeholder = `Enter proxy ID (0-${PROXYURLs.length-1})`;
+		document.getElementById("proxyInput").placeholder = `Enter proxy ID (0-${PROXYURLs.length - 1})`;
 		document.getElementById("proxyInput").max = PROXYURLs.length;
-		document.getElementById("YTInput").placeholder = `Enter Piped ID (0-${YTURLs.length-1})`;
+		document.getElementById("YTInput").placeholder = `Enter Piped ID (0-${YTURLs.length - 1})`;
 		document.getElementById("YTInput").max = YTURLs.length;
 
-		document.getElementById("confirm").addEventListener("click", function() {
+		function confirmURL() {
 			const url = document.getElementById("urlInput").value;
-			if (url.startsWith("https://")) {
-				document.getElementById("urlInput").disabled = true;
-				document.getElementById("launch").removeAttribute("disabled");
-				document.getElementById("changeUrl").style.removeProperty("display");
-				document.getElementById("confirm").style.display = "none";
-			} else {
-				alert("Unable to confirm URL. Please make sure it starts with 'https://'.")
+			document.getElementById("urlInput").disabled = true;
+			document.getElementById("launch").removeAttribute("disabled");
+			document.getElementById("changeUrl").style.removeProperty("display");
+			document.getElementById("confirm").style.display = "none";
+		}
+
+		document.getElementById("confirm").addEventListener("click", confirmURL);
+		document.getElementById("urlInput").addEventListener("keydown", function (event) {
+			if (event.key === "Enter") {
+				confirmURL();
+				setTimeout(function () {document.getElementById("launch").focus()});
 			}
 		});
-	
-		document.getElementById("confirmProxyID").addEventListener("click", function() {
+
+		function confirmProxy() {
 			const ID = document.getElementById("proxyInput").value;
-			if (ID >= 0 && ID <= PROXYURLs.length-1) {
+			if (ID >= 0 && ID <= PROXYURLs.length - 1 && ID !== "") {
 				document.getElementById("proxyInput").disabled = true;
 				document.getElementById("launchProxyID").removeAttribute("disabled");
 				document.getElementById("changeProxyID").style.removeProperty("display");
 				document.getElementById("confirmProxyID").style.display = "none";
 			} else {
-				alert(`Unable to confirm ID. Please make sure it is between 0 and ${PROXYURLs.length-1}.`)
+				alert(`Unable to confirm ID. Please make sure it is between 0 and ${PROXYURLs.length - 1}.`)
+			}
+		}
+	
+		document.getElementById("confirmProxyID").addEventListener("click", confirmProxy);
+		document.getElementById("proxyInput").addEventListener("keydown", function (event) {
+			if (event.key === "Enter") {
+				confirmProxy();
+				setTimeout(function () {document.getElementById("launchProxyID").focus()});
 			}
 		});
 
-		document.getElementById("confirmYTID").addEventListener("click", function() {
+		function confirmYT() {
 			const ID = document.getElementById("YTInput").value;
-			if (ID >= 0 && ID <= YTURLs.length-1) {
+			if (ID >= 0 && ID <= YTURLs.length - 1 && ID !== "") {
 				document.getElementById("YTInput").disabled = true;
 				document.getElementById("launchYTID").removeAttribute("disabled");
 				document.getElementById("changeYTID").style.removeProperty("display");
 				document.getElementById("confirmYTID").style.display = "none";
 			} else {
-				alert(`Unable to confirm ID. Please make sure it is between 0 and ${YTURLs.length-1}.`)
+				alert(`Unable to confirm ID. Please make sure it is between 0 and ${YTURLs.length - 1}.`)
+			}
+		}
+
+		document.getElementById("confirmYTID").addEventListener("click", confirmProxy);
+		document.getElementById("YTInput").addEventListener("keydown", function (event) {
+			if (event.key === "Enter") {
+				confirmYT();
+				setTimeout(function () {document.getElementById("launchYTID").focus()});
 			}
 		});
 	
 		document.getElementById("launch").addEventListener("click", function() {
 			const url = document.getElementById("urlInput").value;
-			blank(url);
+			if (url.startsWith("https://") || url.startsWith("http://") || url.startsWith("file://")) {
+				blank(url);
+			} else {
+				blank("https://" + url);
+			}
 		});
 	
 		document.getElementById("launchProxyID").addEventListener("click", function() {
@@ -1584,7 +1702,7 @@ monitorBattery();
 		});
 		
 		function launchProxyID(ID) {
-			blank(PROXYURLs[ID]);
+			blank(PROXYURLs.all[ID]);
 		}
 
 		function launchYTID(ID) {
