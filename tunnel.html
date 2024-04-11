@@ -1692,6 +1692,7 @@ monitorBattery();
 			
 		document.getElementById("changeUrl").addEventListener("click", function () { 
 			document.getElementById("urlInput").removeAttribute("disabled");
+			document.getElementById("urlInput").focus();
 			document.getElementById("launch").disabled = true;
 			document.getElementById("changeUrl").style.display = "none";
 			document.getElementById("confirm").style.removeProperty("display");
@@ -1699,6 +1700,7 @@ monitorBattery();
 	
 		document.getElementById("changeProxyID").addEventListener("click", function () {
 			document.getElementById("proxyInput").removeAttribute("disabled");
+			document.getElementById("proxyInput").focus();
 			document.getElementById("launchProxyID").disabled = true;
 			document.getElementById("changeProxyID").style.display = "none";
 			document.getElementById("confirmProxyID").style.removeProperty("display");
@@ -1706,6 +1708,7 @@ monitorBattery();
 
 		document.getElementById("changeYTID").addEventListener("click", function () {
 			document.getElementById("YTInput").removeAttribute("disabled");
+			document.getElementById("YTInput").focus();
 			document.getElementById("launchYTID").disabled = true;
 			document.getElementById("changeYTID").style.display = "none";
 			document.getElementById("confirmYTID").style.removeProperty("display");
