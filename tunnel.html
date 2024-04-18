@@ -684,7 +684,7 @@
 	<div class="popup" style="display: none;"><div style="position: absolute;top: 15px;right: 15px;font-size: 25px;cursor: pointer;" onclick="document.querySelector('.popup').style.display = 'none';">
 		<i class="fa-solid fa-xmark"></i></div>
 		<h1>Choose different IDs for proxies</h1>
-		<p>You can choose a different ID for each proxy with extra IDs. Some IDs could be blocked or under maintenence, so you might want a different one. The default ID is 0.</p>
+		<p style="margin: 0 40px 16px;">You can choose a different ID for each proxy with extra IDs. Some IDs could be blocked or under maintenence, so you might want a different one. The default ID is 0.</p>
 	</div>
 
 	<div id="splitContainer">
@@ -1979,7 +1979,7 @@
 			document.getElementById("dropdown-proxy").innerHTML += `<button aria-id="${i}">${PROXYURLs.array[i].name}</button>`;
 			currentProxyIDs[PROXYURLs.array[i].name] = 0;
 			if (PROXYURLs.array[i].links.length > 1) {
-				document.querySelector(".popup").innerHTML += `<input type="number" min="0" max="${PROXYURLs.array[i].links.length - 1}" onkeypress="if(event.keyCode==13){this.blur()}" onchange="this.value=Math.min(Math.max(this.value,this.min),this.max);currentProxyIDs[this.getAttribute('aria-name')]=parseInt(this.value);" aria-name="${PROXYURLs.array[i].name}" placeholder="${PROXYURLs.array[i].name} ID (0 - ${PROXYURLs.array[i].links.length - 1})"><br><br>`;
+				document.querySelector(".popup").innerHTML += `<input type="number" min="0" max="${PROXYURLs.array[i].links.length - 1}" style="width: 280px;" onkeypress="if(event.keyCode==13){this.blur()}" onchange="this.value=Math.min(Math.max(this.value,this.min),this.max);currentProxyIDs[this.getAttribute('aria-name')]=parseInt(this.value);" aria-name="${PROXYURLs.array[i].name}" placeholder="${PROXYURLs.array[i].name} ID (0 - ${PROXYURLs.array[i].links.length - 1})"><br><br>`;
 			}
 		}
 	</script>
