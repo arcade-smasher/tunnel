@@ -286,7 +286,7 @@
 			background-color: rgba(13, 99, 35, 0.7);
 		}
 
-		.document input[type="text"], .document input[type="number"] {
+		.document input[type="text"], .document input[type="number"], .popup input[type="text"], .popup input[type="number"] {
 			background-color: transparent;
 			font-family: inherit;
 			border: 1px solid #33a34f;
@@ -317,15 +317,20 @@
 			clip-path: url(#checked); */
 		}
 
-		.document input[type="text"]::placeholder, .document input[type="number"]::placeholder {
+		.document input[type="text"]::placeholder, .document input[type="number"]::placeholder, .popup input[type="text"]::placeholder, .popup input[type="number"]::placeholder {
 			color: #759b7f;
 		}
 
-		.document h1 {
+		.document h1, .popup h1 {
 			font-size: 40px;
+			text-align: center;
 		}
 
-		.document button {
+		#main1 p, #main1 h2 {
+			text-align: center;
+		}
+
+		.document .button {
 			background-color: transparent;
 			font-family: inherit;
 			border: 1px solid #33a34f;
@@ -360,13 +365,13 @@
 			color: #ff1111;
 		}
 
-		.document button:disabled {
+		.document .button:disabled {
 			color: gray;
 			border-color: gray;
 			cursor: not-allowed;
 		}
 
-		.document button:disabled::selection {
+		.document .button:disabled::selection {
 			background-color: gray;
 			color: black;
 		}
@@ -374,6 +379,113 @@
 		.document input[type="text"]:disabled, .document input[type="number"]:disabled {
 			border-color: gray;
 			color: gray;
+		}
+
+		.dropbtn {
+			background-color: transparent;
+			font-family: inherit;
+			border: 1px solid #33a34f;
+			border-radius: 5px;
+			color: #33a34f;
+			display: inline-block;
+			box-sizing: border-box;
+			padding: 4px 10px;
+			width: 100%;
+			font-size: 15px;
+			height: 30px;
+			cursor: pointer;
+		}
+
+		body:has(.dropdown-content.show-popup) .dropdown:has(.dropdown-content.show-popup) .dropbtn {
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		.dropdown {
+			position: relative;
+			display: inline-block;
+			height: fit-content;
+			background-color: black;
+			user-select: none;
+			flex-grow: 1;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: black;
+			box-sizing: border-box;
+			border-left: 1px solid #33a34f;
+			border-right: 1px solid #33a34f;
+			border-bottom: 1px solid #33a34f;
+			font-size: 18px;
+			min-width: 100%;
+			overflow: auto;
+			z-index: 1;
+			border-bottom-right-radius: 5px;
+			border-bottom-left-radius: 5px;
+			max-width: fit-content;
+		}
+
+		.dropdown-content * {
+			border: none;
+			cursor: pointer;
+			border-bottom: 1px solid #33a34f;
+			text-decoration: none;
+			display: block;
+			background-color: transparent;
+			font-family: inherit;
+			color: #33a34f;
+			box-sizing: border-box;
+			padding: 4px 10px;
+			font-size: 15px;
+			width: 100%;
+			height: 30px;
+		}
+
+		.dropdown-content *:disabled {
+			cursor: default;
+		}
+
+		.dropdown-content *:last-child {
+			border-bottom: none;
+		}
+
+		.change-id {
+			background-color: transparent;
+			font-family: inherit;
+			cursor: pointer;
+			color: #33a34f;
+			border-radius: 5px;
+			display: inline-block;
+			box-sizing: border-box;
+			border: 1px solid #33a34f;
+			padding: 2px 6px;
+			height: 30px;
+			font-size: 15px;
+		}
+
+		.show-popup {
+			display: block;
+		}
+
+		.popup {
+			border: 1px solid #33a34f;
+			text-align: center;
+			background-color: black;
+			z-index: 2;
+			border-radius: 15px;
+			height: 85%;
+			width: 50%;
+			position: absolute;
+			top: 7%;
+			padding: 15px;
+			left: 25%;
+			box-shadow: 0 0 15px #33a34f;
+		}
+
+		#main1 {
+			text-align: left;
 		}
 
 		#main3, #main4, #main6 {
@@ -568,41 +680,54 @@
 </head>
 <body>
 	<div class="topbar"><span id="time">00:00 AM</span><span id="battery"><i class="fa-solid fa-bolt" id="battery-charging" style="display: none"></i> <span id="battery-percentage">100</span>% <i class="fa-solid fa-battery-full" id="battery-icon"></i></span></div>
+
+	<div class="popup" style="display: none;"><div style="position: absolute;top: 15px;right: 15px;font-size: 25px;cursor: pointer;" onclick="document.querySelector('.popup').style.display = 'none';">
+		<i class="fa-solid fa-xmark"></i></div>
+		<h1>Choose different IDs for proxies</h1>
+		<p>You can choose a different ID for each proxy with extra IDs. Some IDs could be blocked or under maintenence, so you might want a different one. The default ID is 0.</p>
+	</div>
+
 	<div id="splitContainer">
 		<div class="left">
-		
 			<div id="main1" class="document">
 				<span style="position: absolute;top: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;" onclick="switchPage(5)">Coming soon!</span>
 				<span style="position: absolute;bottom: 15px;right: 15px;word-break: keep-all;text-wrap: nowrap;word-wrap: keep-all;white-space: nowrap;text-align: left;text-decoration: underline;cursor: help;" onclick="switchPage(3)">Help</span>
 				<span style="position: fixed;left: 15px;bottom: 15px;word-break: keep-all;word-wrap: keep-all;text-wrap: nowrap;white-space: nowrap;text-align: left;text-decoration: underline;cursor: pointer;background-color: black;" onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSd0440qvWUISWLiIpu85QCVr6_JbK0S47ewDv0y2TEti6KhAQ/viewform?usp=sf_link')"><i class="fa-solid fa-bug"></i> Report</span>
 				<h1>Tunnel</h1>
 				<p>A tool for avoiding internet censorship.</p>
-				<div id="abContainer">
-					<h2>about:blank launcher</h2>
-					<input type="text" id="urlInput" type="text" autocomplete="off" placeholder="Enter custom URL"/>
-					<button id="confirm"><i class="fas fa-check"></i> Confirm</button>
-					<button id="changeUrl" style="display: none;"><i class="fas fa-pen"></i> Change</button>
-					<button disabled id="launch"><i class="fas fa-rocket"></i> Launch</button><br><br>
-					<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a link without putting it in your search history."></i></div>
-				</div>
-				<!-- <br> -->
-				<div id="proxyContainer">
-					<h2>Web proxy launcher</h2>
-					<input type="number" id="proxyInput" autocomplete="off" min="0" max="100" placeholder="Enter proxy ID (0-${PROXYURLs.length})"/>
-					<button id="confirmProxyID"><i class="fas fa-check"></i> Confirm</button>
-					<button id="changeProxyID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
-					<button disabled id="launchProxyID"><i class="fas fa-rocket"></i> Launch</button><br><br>
-					<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a web proxy, which allows you to surf the web freely without restrictions."></i></div>
-				</div>
-				<br>
-				<div id="youtubeContainer">
-					<h2>Piped launcher</h2>
-					<input type="number" id="YTInput" autocomplete="off" min="0" max="100" placeholder="Enter Piped ID (0-${YTURLs.length})"/>
-					<button id="confirmYTID"><i class="fas fa-check"></i> Confirm</button>
-					<button id="changeYTID" style="display: none;"><i class="fas fa-pen"></i> Change</button>
-					<button disabled id="launchYTID"><i class="fas fa-rocket"></i> Launch</button>
-					<br><br>
-					<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open piped, which is a privacy alternative to YouTube."></i></div>
+				<div style="width: fit-content; margin: auto;">
+					<div id="abContainer">
+						<h2>about:blank launcher</h2>
+						<input type="text" id="urlInput" type="text" autocomplete="off" placeholder="Enter custom URL"/>
+						<button id="confirm" class="button"><i class="fas fa-check"></i> Confirm</button>
+						<button id="changeUrl" style="display: none;" class="button"><i class="fas fa-pen"></i> Change</button>
+						<button disabled id="launch" class="button"><i class="fas fa-rocket"></i> Launch</button><br><br>
+						<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a link without putting it in your search history."></i></div>
+					</div>
+					<div id="proxyContainer">
+						<h2>Web proxy launcher</h2>
+						<div style="display: flex;">
+							<button class="change-id" title="Change the proxy ID"><i class="fas fa-random"></i></button>&nbsp;
+							<div class="dropdown" id="dropdownProxy">
+								<button class="dropbtn">Select a proxy <i class="fas fa-sort-down"></i></button>
+								<div class="dropdown-content" id="dropdown-proxy">
+									<button disabled>Select a proxy</button>
+								</div>
+							</div>&nbsp;
+							<button disabled id="launchProxyID" class="button"><i class="fas fa-rocket"></i> Launch</button><br><br>
+						</div>
+						<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a web proxy, which allows you to surf the web freely without restrictions."></i></div>
+					</div>
+					<br>
+					<div id="youtubeContainer">
+						<h2>Piped launcher</h2>
+						<input type="number" id="YTInput" autocomplete="off" min="0" max="100" placeholder="Enter Piped ID (0-${YTURLs.length})"/>
+						<button id="confirmYTID" class="button"><i class="fas fa-check"></i> Confirm</button>
+						<button id="changeYTID" style="display: none;" class="button"><i class="fas fa-pen"></i> Change</button>
+						<button disabled id="launchYTID" class="button"><i class="fas fa-rocket"></i> Launch</button>
+						<br><br>
+						<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open piped, which is a privacy alternative to YouTube."></i></div>
+					</div>
 				</div>
 			</div>
 
@@ -617,11 +742,12 @@
 						This will <b>not</b> unblock the link, it will simply just hide it from your search history.</p>
 						
 						<h3>Link format</h3>
-							<p>Links must be a valid URL, either in the format <code>https://example.com</code> or just <code>example.com</code></p><br><br>
+							<p>Links must be a valid URL, either in the format <code>https://example.com/</code> or just <code>example.com</code></p><br><br>
 
 					<h2>IDs</h2>
-						<p>To open a proxy or Piped, simply input a number between <b>0</b> and the number listed in the number input. <br><br>
+						<p>To open a Piped, simply input a number between <b>0</b> and the number listed in the number input. <br>
 						For example, the Piped input has the numbers <b>0 - 5</b>, so input a number between <b>0</b> and <b>5</b>.</p>
+						<p>For the proxies, you can just select an option from the dropdown. Select the shuffle button if you want to choose a different ID for each proxy, in case some aren't working.</p>
 						
 						<h3>Why so many numbers?</h3>
 							<p>Each number corresponds to a different link. If one of the links get blocked, there are many other links to choose from.</p>
@@ -655,7 +781,7 @@
 
 				<h2>Maybe</h2>
 					<ul>
-						<li>Drop-down ID selection</li>
+						<li>None!</li>
 					</ul>
 
 				<h2>Unlikely</h2>
@@ -683,7 +809,7 @@
 	</div>
 	<div class="survey">
 		<div class="survey-close" onclick="this.parentElement.remove();">&times;</div>
-		<span onclick="blank('https://docs.google.com/forms/d/e/1FAIpQLSf3csAgAXMkRhL921APD9WBLENoxHGCWN0C_JKRExRVb0hXRw/viewform')">Appreciate Tunnel? <br>Please spend a minute of your time on the <u>Tunnel survey</u>.</span>
+		<span onclick="window.open('https://discord.gg/gzUky8mCue', '_blank')">Want to learn more about Tunnel? Join the <u>Tunnel Discord Server</u>.</span>
 	</div>
 	<div id="grid"><div class="grid-close" onclick="clearInterval(gridInterval);gridInterval=null;this.parentElement.remove();">&times;</div>
 		<!-- JavaScript will populate this grid -->
@@ -747,10 +873,6 @@
 				console.log("Battery Status API not supported");
 			}
 		}
-
-monitorBattery();
-
-
 		monitorBattery();
 	</script>
 	<script>
@@ -1464,36 +1586,6 @@ monitorBattery();
 		input(">")
 	</script>
 	<script>
-		// var PROXYURLs = [
-		// 	"https://sodium.onrender.com/",
-		// 	"https://metallic.eu.org/",
-		// 	"https://statistics.geyikler.com/",
-		// 	"https://serrcosswilsonmallcreepscensions0phunky.eithermouse.com/",
-		// 	"https://nebus.mathewparkin.com/",
-		// 	"https://myown123.streetdirectory.sg/",
-		// 	"https://messi.mctwisted.pro/",
-		// 	"https://1800history.gotroot.pw/",
-		// 	"https://1700history.gotroot.pw/",
-		// 	"https://1600history.gotroot.pw/",
-		// 	"https://fisdinstructure.gotroot.pw/",
-		// 	"https://jeo.todotrabajo.ar/",
-		// 	"https://jeo5.todotrabajo.ar/",
-		// 	"https://jeo4.todotrabajo.ar/",
-		// 	"https://jeo3.todotrabajo.ar/",
-		// 	"https://jeo2.todotrabajo.ar/",
-		// 	"https://jeo4.subcetatecity.ro/",
-		// 	"https://jeo3.subcetatecity.ro/",
-		// 	"https://jeo2.subcetatecity.ro/",
-		// 	"https://jeo.subcetatecity.ro/",
-		// 	"https://jeo.robot-agachado.org/",
-		// 	"https://jeo4.goldsoft.rs/",
-		// 	"https://jeo3.goldsoft.rs/",
-		// 	"https://jeo2.goldsoft.rs/",
-		// 	"https://jeo.goldsoft.rs/",
-		// 	"https://ixl.plus/",
-		// 	"https://todo.mathnotes.help/"
-		// ];
-
 		var PROXYURLs = {
 			array: [
 				{
@@ -1556,7 +1648,7 @@ monitorBattery();
 					],
 					name: "Rammerhead",
 					games: "N/A",
-					speed: "Variable/Slow"
+					speed: "Fast"
 				},
 				{
 					links: [
@@ -1609,9 +1701,6 @@ monitorBattery();
 			"https://piapi.ggtyler.dev/",
 			"https://pipedapi.12a.app/"
 		];
-
-		document.getElementById("proxyInput").placeholder = `Enter proxy ID (0-${PROXYURLs.length - 1})`;
-		document.getElementById("proxyInput").max = PROXYURLs.length;
 		document.getElementById("YTInput").placeholder = `Enter Piped ID (0-${YTURLs.length - 1})`;
 		document.getElementById("YTInput").max = YTURLs.length;
 
@@ -1642,14 +1731,6 @@ monitorBattery();
 				alert(`Unable to confirm ID. Please make sure it is between 0 and ${PROXYURLs.length - 1}.`)
 			}
 		}
-	
-		document.getElementById("confirmProxyID").addEventListener("click", confirmProxy);
-		document.getElementById("proxyInput").addEventListener("keydown", function (event) {
-			if (event.key === "Enter") {
-				confirmProxy();
-				setTimeout(function () {document.getElementById("launchProxyID").focus()});
-			}
-		});
 
 		function confirmYT() {
 			const ID = document.getElementById("YTInput").value;
@@ -1679,10 +1760,19 @@ monitorBattery();
 				blank("https://" + url);
 			}
 		});
-	
+
 		document.getElementById("launchProxyID").addEventListener("click", function() {
-			const ID = document.getElementById('proxyInput').value;
-			launchProxyID(ID);
+			const ID = document.getElementById("dropdownProxy").getAttribute("aria-id");
+			var links = PROXYURLs.array[ID].links;
+			var currentProxyID = currentProxyIDs[PROXYURLs.array[ID].name];
+			
+			var index = currentProxyID >= links.length ? links.length - 1 : currentProxyID;
+			var cumulativeIndex = 0;
+
+			for (var i = 0; i < ID; i++) {
+				cumulativeIndex += PROXYURLs.array[i].links.length;
+			}
+			launchProxyID(cumulativeIndex + index);
 		});
 
 		document.getElementById("launchYTID").addEventListener("click", function() {
@@ -1692,23 +1782,13 @@ monitorBattery();
 			
 		document.getElementById("changeUrl").addEventListener("click", function () { 
 			document.getElementById("urlInput").removeAttribute("disabled");
-			document.getElementById("urlInput").focus();
 			document.getElementById("launch").disabled = true;
 			document.getElementById("changeUrl").style.display = "none";
 			document.getElementById("confirm").style.removeProperty("display");
 		});
-	
-		document.getElementById("changeProxyID").addEventListener("click", function () {
-			document.getElementById("proxyInput").removeAttribute("disabled");
-			document.getElementById("proxyInput").focus();
-			document.getElementById("launchProxyID").disabled = true;
-			document.getElementById("changeProxyID").style.display = "none";
-			document.getElementById("confirmProxyID").style.removeProperty("display");
-		});
 
 		document.getElementById("changeYTID").addEventListener("click", function () {
 			document.getElementById("YTInput").removeAttribute("disabled");
-			document.getElementById("YTInput").focus();
 			document.getElementById("launchYTID").disabled = true;
 			document.getElementById("changeYTID").style.display = "none";
 			document.getElementById("confirmYTID").style.removeProperty("display");
@@ -1857,6 +1937,51 @@ monitorBattery();
 				}
 			});
 		};
+	</script>
+	<script>
+		var selectedProxy = "Select a proxy";
+		var currentProxyIDs = {};
+		
+		document.addEventListener("click", function () {
+			if (event.target.closest(".dropbtn")) {
+				event.target.closest(".dropbtn").parentElement.querySelector(".dropdown-content").classList.toggle("show-popup");
+				event.target.closest(".dropbtn").innerHTML = `${selectedProxy} <i class="fas fa-sort-down"></i>`;
+			}
+		});
+		
+		document.addEventListener("mousedown", function () {
+			if (!event.target.classList.contains('dropbtn') && !event.target.classList.contains('dropdown-content') && !event.target.closest('.dropdown-content')) {
+				for (let i = 0; i < document.querySelectorAll(".dropdown-content").length; i++) {
+					document.querySelectorAll(".dropdown-content")[i].classList.remove("show-popup");
+				}
+			}
+		});
+		
+		document.addEventListener("mouseup", function () {
+			if (event.target.parentElement.classList.contains('dropdown-content') && event.target.closest(".dropdown")) {
+				event.target.closest(".dropdown").querySelector(".dropdown-content").classList.remove("show-popup");
+				selectedProxy = event.target.innerHTML;
+				event.target.closest(".dropdown").querySelector(".dropbtn").innerHTML = `${selectedProxy} <i class="fas fa-sort-down"></i>`;	
+				event.target.closest(".dropdown").setAttribute("aria-id", event.target.getAttribute("aria-id"));
+				if (event.target.closest("#dropdownProxy")) {
+					document.getElementById("launchProxyID").removeAttribute("disabled");
+				}
+			}
+			if (!event.target.closest(".popup") && !event.target.closest(".change-id")) {
+				document.querySelector(".popup").style.display = "none";
+			}
+		});
+		
+		document.querySelector(".change-id").addEventListener("click", function () {
+			document.querySelector(".popup").style.display = "block";
+		});
+		for (var i = 0; i < PROXYURLs.array.length; i++) {
+			document.getElementById("dropdown-proxy").innerHTML += `<button aria-id="${i}">${PROXYURLs.array[i].name}</button>`;
+			currentProxyIDs[PROXYURLs.array[i].name] = 0;
+			if (PROXYURLs.array[i].links.length > 1) {
+				document.querySelector(".popup").innerHTML += `<input type="number" min="0" max="${PROXYURLs.array[i].links.length - 1}" onkeypress="if(event.keyCode==13){this.blur()}" onchange="this.value=Math.min(Math.max(this.value,this.min),this.max);currentProxyIDs[this.getAttribute('aria-name')]=parseInt(this.value);" aria-name="${PROXYURLs.array[i].name}" placeholder="${PROXYURLs.array[i].name} ID (0 - ${PROXYURLs.array[i].links.length - 1})"><br><br>`;
+			}
+		}
 	</script>
 </body>
 </html>
