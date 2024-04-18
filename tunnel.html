@@ -809,7 +809,7 @@
 	</div>
 	<div class="survey">
 		<div class="survey-close" onclick="this.parentElement.remove();">&times;</div>
-		<span onclick="window.open('https://discord.gg/gzUky8mCue', '_blank')">Want to learn more about Tunnel? Join the <u>Tunnel Discord Server</u>.</span>
+		<span onclick="if(event.target.tagName!='A'){window.open('https://discord.gg/gzUky8mCue', '_blank');console.log(event.target)}">Want to learn more about Tunnel? Join the <a href="https://discord.gg/gzUky8mCue" target="_blank" style="color: inherit;">Tunnel Discord Server</a>.</span>
 	</div>
 	<div id="grid"><div class="grid-close" onclick="clearInterval(gridInterval);gridInterval=null;this.parentElement.remove();">&times;</div>
 		<!-- JavaScript will populate this grid -->
