@@ -286,7 +286,7 @@
 			background-color: rgba(13, 99, 35, 0.7);
 		}
 
-		.document input[type="text"], .document input[type="number"], .popup input[type="text"], .popup input[type="number"] {
+		.document input[type="text"], .document input[type="number"], .popup input[type="text"], .popup input[type="number"], .settings-popup input[type="text"], .settings-popup input[type="number"] {
 			background-color: transparent;
 			font-family: inherit;
 			border: 1px solid #33a34f;
@@ -317,7 +317,7 @@
 			clip-path: url(#checked); */
 		}
 
-		.document input[type="text"]::placeholder, .document input[type="number"]::placeholder, .popup input[type="text"]::placeholder, .popup input[type="number"]::placeholder {
+		.document input[type="text"]::placeholder, .document input[type="number"]::placeholder, .popup input[type="text"]::placeholder, .popup input[type="number"]::placeholder, .settings-popup input[type="text"]::placeholder, .settings-popup input[type="number"]::placeholder {
 			color: #759b7f;
 		}
 
@@ -427,7 +427,7 @@
 			max-width: fit-content;
 		}
 
-		.dropdown-content * {
+		.dropdown-content > * {
 			border: none;
 			cursor: pointer;
 			border-bottom: 1px solid #33a34f;
@@ -443,11 +443,11 @@
 			height: 30px;
 		}
 
-		.dropdown-content *:disabled {
+		.dropdown-content > *:disabled {
 			cursor: default;
 		}
 
-		.dropdown-content *:last-child {
+		.dropdown-content > *:last-child {
 			border-bottom: none;
 		}
 
@@ -676,15 +676,121 @@
 		.maze-end::after {
 			content: 'E\00a0' !important;
 		}
+
+		.settings {
+			position: absolute; 
+			top: 40px;
+			left: 20px;
+			font-size: 26px;
+			cursor: pointer;
+			z-index: 2;
+		}
+		
+		.settings-popup {
+			border: 1px solid #33a34f;
+			box-sizing: border-box;
+			background-color: black;
+			z-index: 2;
+			border-radius: 15px;
+			height: 85%;
+			width: 50%;
+			position: absolute;
+			top: 7%;
+			padding: 15px 250px;
+			left: 25%;
+			box-shadow: 0 0 15px #33a34f;
+		}
+
+		.settings-popup h1 {
+			width: 100%;
+			text-align: center;
+		}
+
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 35px;
+			height: 20px;
+		}
+		
+		.switch input { 
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			box-sizing: border-box;
+			background-color: black;
+			border: 1px solid green;
+			border-radius: 34px;
+		}
+		
+		.slider::before {
+			position: absolute;
+			content: "";
+			height: 80%;
+			aspect-ratio: 1 / 1;
+			left: 5%;
+			bottom: 10%;
+			background-color: green;
+			border-radius: 50%;
+		}
+		
+		input:checked + .slider {
+			background-color: green;
+			border: none;
+		}
+		
+		input:checked + .slider::before {
+			right: 5%;
+			left: unset;
+			background-color: black;
+		}
 	</style>
 </head>
 <body>
 	<div class="topbar"><span id="time">00:00 AM</span><span id="battery"><i class="fa-solid fa-bolt" id="battery-charging" style="display: none"></i> <span id="battery-percentage">100</span>% <i class="fa-solid fa-battery-full" id="battery-icon"></i></span></div>
 
-	<div class="popup" style="display: none;"><div style="position: absolute;top: 15px;right: 15px;font-size: 25px;cursor: pointer;" onclick="document.querySelector('.popup').style.display = 'none';">
-		<i class="fa-solid fa-xmark"></i></div>
+	<div class="settings" onclick="document.querySelector('.settings-popup').style.display='block'"><i class="fas fa-cog"></i></div>
+
+	<div class="popup" style="display: none;">
+		<div style="position: absolute;top: 15px;right: 15px;font-size: 25px;cursor: pointer;" onclick="document.querySelector('.popup').style.display = 'none';"><i class="fa-solid fa-xmark"></i></div>
 		<h1>Choose different IDs for proxies</h1>
-		<p style="margin: 0 40px 16px;">You can choose a different ID for each proxy with extra IDs. Some IDs could be blocked or under maintenence, so you might want a different one. The default ID is 0.</p>
+		<p>You can choose a different ID for each proxy with extra IDs. Some IDs could be blocked or under maintenence, so you might want a different one. The default ID is 0.</p>
+	</div>
+
+	<div class="settings-popup" style="display: none;">
+		<div style="position: absolute;top: 15px;right: 15px;font-size: 25px;cursor: pointer;" onclick="document.querySelector('.settings-popup').style.display = 'none';"><i class="fa-solid fa-xmark"></i></div>
+		<h1>Settings</h1>
+		<label class="switch">
+			<input type="checkbox" id="closeConfirm">
+			<span class="slider"></span>
+		</label>
+		<label for="closeConfirm">Disable teachers from closing this tab.</label><br><br>
+
+		<label class="switch">
+			<input type="checkbox" id="closeOtherConfirm">
+			<span class="slider"></span>
+		</label>
+		<label for="closeOtherConfirm">Disable teachers from closing proxy tabs.</label><br><br>
+
+		<label for="tabName">Custom Tab Name: </label>
+		<input type="text" id="tabName" placeholder="Tunnel" onchange="document.querySelector('title').innerText = this.value || 'Tunnel'"><!-- <br><br>
+
+		<label for="tabIcon">Custom Tab Icon: </label>
+		<div class="dropdown" id="tabIcon">
+			<button class="dropbtn">Select an icon <i class="fas fa-sort-down"></i></button>
+			<div class="dropdown-content">
+				<button disabled>Select an icon</button>
+			</div>
+		</div> -->
 	</div>
 
 	<div id="splitContainer">
@@ -714,8 +820,8 @@
 									<button disabled>Select a proxy</button>
 								</div>
 							</div>&nbsp;
-							<button disabled id="launchProxyID" class="button"><i class="fas fa-rocket"></i> Launch</button><br><br>
-						</div>
+							<button disabled id="launchProxyID" class="button"><i class="fas fa-rocket"></i> Launch</button>
+						</div><br>
 						<div class="info-line"><i class="info fa fa-info-circle" aria-valuetext="This will open a web proxy, which allows you to surf the web freely without restrictions."></i></div>
 					</div>
 					<br>
@@ -815,6 +921,17 @@
 		<!-- JavaScript will populate this grid -->
 	</div>
 
+	
+	<script>
+		document.querySelector("title").innerText = localStorage.getItem("tabName") || "Tunnel";
+		document.getElementById("tabName").value = localStorage.getItem("tabName");
+		document.getElementById("closeConfirm").checked = (localStorage.getItem("closeConfirm") == "true") || false;
+		if (localStorage.getItem("closeOtherConfirm") != null) {
+			document.getElementById("closeOtherConfirm").checked = (localStorage.getItem("closeOtherConfirm") == "true");
+		} else {
+			document.getElementById("closeOtherConfirm").checked = true;
+		}
+	</script>
 	<script>
 		const batteryPercentageElem = document.getElementById("battery-percentage");
 		const batteryChargingElem = document.getElementById("battery-charging");
@@ -1625,12 +1742,26 @@
 					links: [
 						"https://serrcosswilsonmallcreepscensions0phunky.eithermouse.com/",
 						"https://nebus.mathewparkin.com/",
+						"https://myown123.streetdirectory.sg/",
 						"https://messi.mctwisted.pro/",
+						"https://1800history.gotroot.pw/",
+						"https://1700history.gotroot.pw/",
+						"https://1600history.gotroot.pw/",
+						"https://fisdinstructure.gotroot.pw/",
 						"https://jeo.todotrabajo.ar/",
 						"https://jeo5.todotrabajo.ar/",
 						"https://jeo4.todotrabajo.ar/",
 						"https://jeo3.todotrabajo.ar/",
-						"https://jeo2.todotrabajo.ar/"
+						"https://jeo2.todotrabajo.ar/",
+						"https://jeo4.subcetatecity.ro/",
+						"https://jeo3.subcetatecity.ro/",
+						"https://jeo2.subcetatecity.ro/",
+						"https://jeo.subcetatecity.ro/",
+						"https://jeo.robot-agachado.org/",
+						"https://jeo4.goldsoft.rs/",
+						"https://jeo3.goldsoft.rs/",
+						"https://jeo2.goldsoft.rs/",
+						"https://jeo.goldsoft.rs/"
 					],
 					name: "Rammerhead",
 					games: "N/A",
@@ -1799,6 +1930,17 @@
 			stl.left = stl.right = stl.top = stl.bottom = '0';
 			iframe.src = url;
 			tab.document.body.appendChild(iframe);
+			if (document.getElementById("closeOtherConfirm").checked == true) {
+				const scriptElement = tab.document.createElement("script");
+				scriptElement.innerHTML = `
+					window.onbeforeunload = e => {
+						var dialogText = 'Changes you made may not be saved.';
+						e.returnValue = dialogText;
+						return dialogText;
+					};
+				`;
+				tab.document.body.appendChild(scriptElement);
+			}
 		}
 		
 		function switchPage(page) {
@@ -1925,16 +2067,18 @@
 		};
 	</script>
 	<script>
-		var selectedProxy = "Select a proxy";
 		var currentProxyIDs = {};
-		
+
 		document.addEventListener("click", function () {
 			if (event.target.closest(".dropbtn")) {
+				// if (event.target.closest(".dropbtn").innerHTML == event.target.closest(".dropdown").querySelector(".dropdown-content button:disabled").innerHTML) {
+				// 	selectedProxy = event.target.closest(".dropdown").querySelector(".dropdown-content button:disabled").innerHTML;
+				// }
 				event.target.closest(".dropbtn").parentElement.querySelector(".dropdown-content").classList.toggle("show-popup");
-				event.target.closest(".dropbtn").innerHTML = `${selectedProxy} <i class="fas fa-sort-down"></i>`;
+				// event.target.closest(".dropbtn").innerHTML = `${selectedProxy} <i class="fas fa-sort-down"></i>`;
 			}
 		});
-		
+
 		document.addEventListener("mousedown", function () {
 			if (!event.target.classList.contains('dropbtn') && !event.target.classList.contains('dropdown-content') && !event.target.closest('.dropdown-content')) {
 				for (let i = 0; i < document.querySelectorAll(".dropdown-content").length; i++) {
@@ -1942,12 +2086,11 @@
 				}
 			}
 		});
-		
+
 		document.addEventListener("mouseup", function () {
 			if (event.target.parentElement.classList.contains('dropdown-content') && event.target.closest(".dropdown")) {
 				event.target.closest(".dropdown").querySelector(".dropdown-content").classList.remove("show-popup");
-				selectedProxy = event.target.innerHTML;
-				event.target.closest(".dropdown").querySelector(".dropbtn").innerHTML = `${selectedProxy} <i class="fas fa-sort-down"></i>`;	
+				event.target.closest(".dropdown").querySelector(".dropbtn").innerHTML = `${event.target.innerHTML || event.target.closest(".dropdown").querySelector(".dropdown-content button:disabled").innerHTML} <i class="fas fa-sort-down"></i>`;	
 				event.target.closest(".dropdown").setAttribute("aria-id", event.target.getAttribute("aria-id"));
 				if (event.target.closest("#dropdownProxy")) {
 					document.getElementById("launchProxyID").removeAttribute("disabled");
@@ -1956,8 +2099,11 @@
 			if (!event.target.closest(".popup") && !event.target.closest(".change-id")) {
 				document.querySelector(".popup").style.display = "none";
 			}
+			if (!event.target.closest(".settings-popup") && !event.target.closest(".settings")) {
+				document.querySelector(".settings-popup").style.display = "none";
+			}
 		});
-		
+
 		document.querySelector(".change-id").addEventListener("click", function () {
 			document.querySelector(".popup").style.display = "block";
 		});
@@ -1965,9 +2111,29 @@
 			document.getElementById("dropdown-proxy").innerHTML += `<button aria-id="${i}">${PROXYURLs.array[i].name}</button>`;
 			currentProxyIDs[PROXYURLs.array[i].name] = 0;
 			if (PROXYURLs.array[i].links.length > 1) {
-				document.querySelector(".popup").innerHTML += `<input type="number" min="0" max="${PROXYURLs.array[i].links.length - 1}" style="width: 280px;" onkeypress="if(event.keyCode==13){this.blur()}" onchange="this.value=Math.min(Math.max(this.value,this.min),this.max);currentProxyIDs[this.getAttribute('aria-name')]=parseInt(this.value);" aria-name="${PROXYURLs.array[i].name}" placeholder="${PROXYURLs.array[i].name} ID (0 - ${PROXYURLs.array[i].links.length - 1})"><br><br>`;
+				document.querySelector(".popup").innerHTML += `<input type="number" min="0" max="${PROXYURLs.array[i].links.length - 1}" onkeypress="if(event.keyCode==13){this.blur()}" onchange="this.value=Math.min(Math.max(this.value,this.min),this.max);currentProxyIDs[this.getAttribute('aria-name')]=parseInt(this.value);" aria-name="${PROXYURLs.array[i].name}" placeholder="${PROXYURLs.array[i].name} ID (0 - ${PROXYURLs.array[i].links.length - 1})"><br><br>`;
 			}
 		}
+
+		// var icons = [
+		// 	"https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png",
+		// 	"https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
+		// ];
+		// for (var i = 0; i < icons.length; i++) {
+		// 	document.getElementById("tabIcon").querySelector(".dropdown-content").innerHTML += `<button aria-id="${i}"><img src="${icons[i]}" style="height: 100%; aspect-ratio: 1 / 1;"></button>`;
+		// }
+	</script>
+	<script>
+		window.onbeforeunload = e => {
+			localStorage.setItem("closeConfirm", document.getElementById("closeConfirm").checked.toString());
+			localStorage.setItem("closeOtherConfirm", document.getElementById("closeOtherConfirm").checked.toString());
+			localStorage.setItem("tabName", document.getElementById("tabName").value);
+			if (document.getElementById("closeConfirm").checked == true) {
+				var dialogText = 'Changes you made may not be saved.';
+				e.returnValue = dialogText;
+				return dialogText;
+			}
+		};
 	</script>
 </body>
 </html>
