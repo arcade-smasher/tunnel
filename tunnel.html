@@ -782,9 +782,12 @@
 		<label for="closeOtherConfirm">Disable teachers from closing proxy tabs.</label><br><br>
 
 		<label for="tabName">Custom Tab Name: </label>
-		<input type="text" id="tabName" placeholder="Tunnel" onchange="document.querySelector('title').innerText = this.value || 'Tunnel'"><!-- <br><br>
+		<input type="text" id="tabName" placeholder="Tunnel" onchange="document.querySelector('title').innerText = this.value || 'Tunnel'"><br><br>
 
-		<label for="tabIcon">Custom Tab Icon: </label>
+		<label for="proxyTabName">Custom Proxy Tab Name: </label>
+		<input type="text" id="proxyTabName" placeholder="about:blank">
+
+		<!-- <label for="tabIcon">Custom Tab Icon: </label>
 		<div class="dropdown" id="tabIcon">
 			<button class="dropbtn">Select an icon <i class="fas fa-sort-down"></i></button>
 			<div class="dropdown-content">
@@ -925,6 +928,7 @@
 	<script>
 		document.querySelector("title").innerText = localStorage.getItem("tabName") || "Tunnel";
 		document.getElementById("tabName").value = localStorage.getItem("tabName");
+		document.getElementById("proxyTabName").value = localStorage.getItem("proxyTabName");
 		document.getElementById("closeConfirm").checked = (localStorage.getItem("closeConfirm") == "true") || false;
 		if (localStorage.getItem("closeOtherConfirm") != null) {
 			document.getElementById("closeOtherConfirm").checked = (localStorage.getItem("closeOtherConfirm") == "true");
@@ -1920,15 +1924,18 @@
 		}
 	
 		function blank(url) {
-			const tab = window.open('about:blank', '_blank');
-			const iframe = tab.document.createElement('iframe');
+			const tab = window.open("about:blank", "_blank");
+			const iframe = tab.document.createElement("iframe");
+			const title = tab.document.createElement("title");
+			title.innerText = document.getElementById("proxyTabName").value || "about:blank";
 			const stl = iframe.style;
 			stl.border = stl.outline = 'none';
-			stl.width = '100vw';
-			stl.height = '100vh';
-			stl.position = 'fixed';
-			stl.left = stl.right = stl.top = stl.bottom = '0';
+			stl.width = "100vw";
+			stl.height = "100vh";
+			stl.position = "fixed";
+			stl.left = stl.right = stl.top = stl.bottom ="0";
 			iframe.src = url;
+			tab.document.head.appendChild(title);
 			tab.document.body.appendChild(iframe);
 			if (document.getElementById("closeOtherConfirm").checked == true) {
 				const scriptElement = tab.document.createElement("script");
@@ -2128,6 +2135,7 @@
 			localStorage.setItem("closeConfirm", document.getElementById("closeConfirm").checked.toString());
 			localStorage.setItem("closeOtherConfirm", document.getElementById("closeOtherConfirm").checked.toString());
 			localStorage.setItem("tabName", document.getElementById("tabName").value);
+			localStorage.setItem("proxyTabName", document.getElementById("proxyTabName").value);
 			if (document.getElementById("closeConfirm").checked == true) {
 				var dialogText = 'Changes you made may not be saved.';
 				e.returnValue = dialogText;
